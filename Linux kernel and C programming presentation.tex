@@ -1,0 +1,1162 @@
+%----------------------------------------------------------------------------------------
+%	PACKAGES AND OTHER DOCUMENT CONFIGURATIONS
+%----------------------------------------------------------------------------------------
+
+\documentclass[
+	11pt, % Set the default font size, options include: 8pt, 9pt, 10pt, 11pt, 12pt, 14pt, 17pt, 20pt
+	%t, % Uncomment to vertically align all slide content to the top of the slide, rather than the default centered
+	%aspectratio=169, % Uncomment to set the aspect ratio to a 16:9 ratio which matches the aspect ratio of 1080p and 4K screens and projectors
+]{beamer}
+
+\graphicspath{{Images/}{./}}
+
+\usepackage{booktabs}
+
+\usetheme{Madrid}
+\usecolortheme{orchid}
+\usefonttheme{default} % Typeset using the default sans serif font
+
+\usepackage{palatino} % Use the Palatino font for serif text
+\usepackage[default]{opensans} % Use the Open Sans font for sans serif text
+
+\useinnertheme{rectangles}
+
+%\usepackage{styles/ngk813_style}
+
+% ------------------------------------------------------------------------------
+% Listings
+% ------------------------------------------------------------------------------
+\usepackage[dvipsnames]{xcolor}
+\usepackage{textcomp}
+\usepackage{listings}
+\usepackage{inconsolata}
+\usepackage{fontawesome} % egyedi listajelekhez például
+\usepackage{graphicx}
+
+\definecolor{mygreen}{HTML}{37980D}
+\definecolor{myblue}{HTML}{0D089F}
+\definecolor{myred}{HTML}{98290D}
+
+\newcommand{\ascode}[1]{{\fontfamily{DejaVu Sans Mono}\ttfamily\selectfont\replunderscores{#1}}}
+\newcommand{\bfcode}[1]{\textbf{\ascode{#1}}}
+\newcommand{\replunderscores}[1]{\expandafter\@repl@underscores#1_\relax}
+\def\@repl@underscores#1_#2\relax{%
+    \ifx \relax #2\relax
+        % #2 is empty => finish
+        #1%
+    \else
+        % #2 is not empty => underscore was contained, needs to be replaced
+        #1%
+        \textunderscore
+        % continue replacing
+        % #2 ends with an extra underscore so I don't need to add another one
+        \@repl@underscores#2\relax
+    \fi
+}
+
+\def\lstbasicfont{\fontfamily{DejaVu Sans Mono}\selectfont\footnotesize}
+
+\definecolor{mGreen}{rgb}{0,0.6,0}
+\definecolor{mGray}{rgb}{0.5,0.5,0.5}
+\definecolor{mPurple}{rgb}{0.58,0,0.82}
+\definecolor{backgroundColour}{rgb}{0.98,0.98,0.98}
+
+\lstset{%
+basicstyle=\ttfamily
+}
+\lstdefinestyle{CStyle}{
+    backgroundcolor=\color{backgroundColour},
+    commentstyle=\color{mGreen},
+    keywordstyle=\color{blue},
+    numberstyle=\small\color{mGray},
+    stringstyle=\color{mPurple},
+    basicstyle=\footnotesize\ttfamily,
+    breakatwhitespace=false,
+    breaklines=true,
+    captionpos=b,
+    keepspaces=true,
+    numbers=left,
+    numbersep=5pt,
+    showspaces=false,
+    showstringspaces=false,
+    showtabs=false,
+    tabsize=4,
+    language=C,
+    upquote=true,
+    inputencoding = utf8,  % Input encoding
+    extendedchars = true,  % Extended ASCII
+    literate      =        % Support additional characters
+      {á}{{\'a}}1  {é}{{\'e}}1  {í}{{\'i}}1 {ó}{{\'o}}1  {ú}{{\'u}}1
+      {Á}{{\'A}}1  {É}{{\'E}}1  {Í}{{\'I}}1 {Ó}{{\'O}}1  {Ú}{{\'U}}1
+      {à}{{\`a}}1  {è}{{\`e}}1  {ì}{{\`i}}1 {ò}{{\`o}}1  {ù}{{\`u}}1
+      {À}{{\`A}}1  {È}{{\'E}}1  {Ì}{{\`I}}1 {Ò}{{\`O}}1  {Ù}{{\`U}}1
+      {ä}{{\"a}}1  {ë}{{\"e}}1  {ï}{{\"i}}1 {ö}{{\"o}}1  {ü}{{\"u}}1
+      {ő}{{\~o}}1  {Ő}{{\~O}}1  {ű}{{\~u}}1 {Ű}{{\~U}}1
+      {Ä}{{\"A}}1  {Ë}{{\"E}}1  {Ï}{{\"I}}1 {Ö}{{\"O}}1  {Ü}{{\"U}}1
+      {â}{{\^a}}1  {ê}{{\^e}}1  {î}{{\^i}}1 {ô}{{\^o}}1  {û}{{\^u}}1
+      {Â}{{\^A}}1  {Ê}{{\^E}}1  {Î}{{\^I}}1 {Ô}{{\^O}}1  {Û}{{\^U}}1
+      {œ}{{\oe}}1  {Œ}{{\OE}}1  {æ}{{\ae}}1 {Æ}{{\AE}}1  {ß}{{\ss}}1
+      {ç}{{\c c}}1 {Ç}{{\c C}}1 {ø}{{\o}}1  {Ø}{{\O}}1   {å}{{\r a}}1
+      {Å}{{\r A}}1 {ã}{{\~a}}1  {õ}{{\~o}}1 {Ã}{{\~A}}1  {Õ}{{\~O}}1
+      {ñ}{{\~n}}1  {Ñ}{{\~N}}1  {¿}{{?`}}1  {¡}{{!`}}1
+      {°}{{\textdegree}}1 {º}{{\textordmasculine}}1 {ª}{{\textordfeminine}}1
+      % ¿ and ¡ are not correctly displayed if inconsolata font is used
+      % together with the lstlisting environment. Consider typing code in
+      % external files and using \lstinputlisting to display them instead.
+}
+
+%----------------------------------------------------------------------------------------
+%	PRESENTATION INFORMATION
+%----------------------------------------------------------------------------------------
+
+\title[Linux kernel and C programming]{Linux kernel and C programming}
+\subtitle{BLOCK 1: Introduction to the C language}
+\author[Gergely Korcsák]{Gergely Korcsák}
+\institute[OE NIK]{Óbuda University \\ \smallskip \textit{korcsak.gergely@nik.uni-obuda.hu}}
+\date[\today]{\today}
+
+%----------------------------------------------------------------------------------------
+
+\begin{document}
+
+%----------------------------------------------------------------------------------------
+%	TITLE SLIDE
+%----------------------------------------------------------------------------------------
+
+\begin{frame}
+	\titlepage
+\end{frame}
+
+%----------------------------------------------------------------------------------------
+%	TABLE OF CONTENTS SLIDE
+%----------------------------------------------------------------------------------------
+
+\begin{frame}
+	\frametitle{Presentation Overview} % Slide title, remove this command for no title
+
+	%\tableofcontents % Output the table of contents (all sections on one slide)
+	\tableofcontents[pausesections,sections={1}] % Output the table of contents (break sections up across separate slides)
+\end{frame}
+
+\begin{frame}
+	\frametitle{Presentation Overview}
+	\tableofcontents[pausesections,sections={2}]
+\end{frame}
+
+\begin{frame}
+	\frametitle{Presentation Overview}
+	\tableofcontents[pausesections,sections={3}]
+	\tableofcontents[pausesections,sections={4}]
+\end{frame}
+
+%----------------------------------------------------------------------------------------
+%	PRESENTATION BODY SLIDES
+%----------------------------------------------------------------------------------------
+
+\section{Introduction}
+
+\begin{frame}
+	\frametitle{Introduction}
+
+    Name:  Gergely Korcsák
+
+	\bigskip % Vertical whitespace
+
+    Email: korcsak.gergely@nik.uni-obuda.hu
+
+\end{frame}
+
+\begin{frame}
+    \subsection{Requirements}
+	\frametitle{Requirements}
+
+    The course will cover basic programming knowledge of the C language,
+    and how to create linux kernel modules and user applications.
+
+	\bigskip % Vertical whitespace
+
+    \textbf{Requirements:}
+	\begin{itemize}
+		\item Attendance
+		\item 50p One midterm exam
+		\item 50p One assignmet
+	\end{itemize}
+
+	\bigskip % Vertical whitespace
+
+    The midterm exam and the assignment will worth 50 points each.
+    The total of 100 points will result in the closing mark.
+
+\end{frame}
+
+\begin{frame}
+    \subsection{Semester}
+	\frametitle{Semester}
+
+	\begin{enumerate}
+        \item Introduction to C (hello world, gcc, CMake)
+        \item Memory basics (cache, stack, heap, pahe(s))
+        \item CMake (variables, if/else)
+        \item Function pointers, unions and argc/args
+        \item Typedef, extern, static and compiler optimization
+        \item Introduction to Linux kernel modules (kmake, files)
+        \item Kernel proc files
+        \item Kernel dev files
+        \item C compile process (preprocess, compile, link)
+        \item CMake linker flags
+        \item Midterm exam practice
+        \item Midterm exam
+        \item Midterm assignment presentations
+        \item Midterm exam and assignment presentations retake
+	\end{enumerate}
+
+\end{frame}
+
+\begin{frame}
+    \subsection{Purpouse}
+	\frametitle{Purpouse}
+
+    The purpouse of this course it to get the technical knowledge of the C programming language.
+
+    \bigskip
+
+    This course is not for beginners, I expect you to have some prior programming experience. (like C#)
+
+\end{frame}
+
+
+%------------------------------------------------
+
+\begin{frame}
+    \section{Introduction to C}
+	\begin{center}
+		{\Huge Introduction to C}
+	\end{center}
+\end{frame}
+
+\begin{frame}
+    \subsection{History}
+	\frametitle{History}
+
+    The C programming language is very simple.
+    Altaugh using it can be quite difficult, due to memory management and other.
+    But provides freedom.
+
+    \bigskip
+
+    C is a general-purpose programming language, and was created in the 1970s by \textit{Dennis Ritchie}. % todo cite..
+
+    \bigskip
+
+    It was mainly developed to replace assembly, and create portable code/programs.
+
+\end{frame}
+
+\begin{frame}
+    \subsection{Types}
+	\frametitle{Types}
+
+    C is a strongly typed programming language.
+    To declare a variable you need to write the \ascode{type} before it.
+    The size of a variable will depend on the architecture, but lets see the sizes for a 64 bit processor.
+
+    \begin{table}[h]
+        \centering
+        \begin{tabular}{|p{.2\textwidth}|p{.2\textwidth}|p{.5\textwidth}|}
+            \hline
+            \textbf{Type}       & \textbf{Size}     & \textbf{Description}  \\
+            \hline
+            \ascode{char}       & \ascode{8  bit}   & Signed Character (treated as int) \\
+            \ascode{short}      & \ascode{16 bit}   & Short Signed integer.             \\
+            \ascode{int}        & \ascode{32 bit}   & Signed integer.                   \\
+            \ascode{long}       & \ascode{64 bit}   & Long Signed integer.              \\
+            \ascode{float}      & \ascode{32 bit}   & Single precision floating point.  \\
+            \ascode{double}     & \ascode{64 bit}   & Double precision floating point.  \\
+            \hline
+
+        \end{tabular}
+    \end{table}
+
+    You can read out the bytesize of a variable by using \ascode{sizeof()}.
+
+\end{frame}
+
+\begin{frame}[fragile]
+    \subsection{Variables}
+	\frametitle{Variables}
+
+    Variables are \alert{(?)not zeroed} out at initialization.
+    Therefore when we declare a variable, by default they will have the previous value of the memory they were assigned to.
+
+    To assign a variable we can use the
+    \bfcode{=},
+    \bfcode{+=},
+    \bfcode{-=},
+    \bfcode{*=},
+    \bfcode{/=} and
+    \bfcode{\%=} operators
+
+    \bigskip
+
+    \begin{lstlisting}[style=CStyle]
+int a;
+int b = 0;
+
+int c = 2, d = 4;
+
+\end{lstlisting}
+
+    \bigskip
+
+    We can do math between them, by using the \bfcode{+}, \bfcode{-}, \bfcode{*} and \bfcode{/} operators.
+
+    \bigskip
+
+    \begin{lstlisting}[style=CStyle]
+a = d - b;      // a: 4
+int e = a * c   // e: 8
+
+\end{lstlisting}
+
+\end{frame}
+
+\begin{frame}[fragile]
+    \subsection{Type modifiers}
+	\frametitle{Type modifiers}
+
+    \begin{table}[h]
+        \centering
+        \begin{tabular}{|p{.2\textwidth}|p{.7\textwidth}|}
+            \hline
+            \textbf{Modifier}   & \textbf{Description}  \\
+            \hline
+            \ascode{signed}     & Ensure a variable is signed. \\
+            \ascode{unsigned}   & Ensure a variable is unsigned. \\
+            \ascode{short}      & Shortens the variable size by half. \textit{(if possible)} \\
+            \ascode{long}       & Doubles the variable size. \textit{(if possible)} \\
+            \hline
+
+        \end{tabular}
+    \end{table}
+
+    \bigskip
+
+    \begin{lstlisting}[style=CStyle]
+unsigned int a = 4;
+long long b = 3;
+
+b += a;
+
+\end{lstlisting}
+
+\end{frame}
+
+\begin{frame}[fragile]
+    \subsection{Macros}
+	\frametitle{Macros}
+
+    Macros will only be used at preprocessing, and will be inserted into the code as is.
+    They can contain function like variables, which will be used at preprocessing.
+    Lets se a short example:
+
+    \bigskip
+
+    \begin{lstlisting}[style=CStyle]
+#define debug_string    "[debug]: "
+#define mystring        "words in my head"
+#define number1         75434
+#define number2         1234
+#define sum(a, b)       a + b
+#define mul(a, b)       (a * b)
+
+printf(debug_string "%s - %d\n", mystring, sum(number1, number2));
+
+// will be compiled as:
+printf("[debug]: " "%s - %d\n", "words in my head", 75434 + 1234));
+// will print: [debug]: words in my head - 76668
+
+\end{lstlisting}
+\end{frame}
+
+\begin{frame}
+    \subsection{Memory}
+	\frametitle{Memory}
+
+    You can look at computer memory as an array of bytes. It can be indexed from 0 to the sky.
+
+    \bigskip
+
+    When running your program you will get a slice of memory to use from the kernel.
+    This is where your application will be loaded.
+
+\end{frame}
+
+\begin{frame}[fragile]
+    \subsection{Pointers}
+	\frametitle{Pointers}
+
+    Pointers are also variables, which point to an arbitrary memory location.
+
+    \bigskip
+
+    \begin{lstlisting}[style=CStyle]
+int a = 10;
+int* p = &a;    // will set the value of 'p' to the address of 'a'
+*p = 5;         /* will set the value at the address inside 'p' to 5,
+                   therefore 'a' will be 5 */
+p = 10;         /* will set the value of 'p' to 10,
+                   the value of 'a' will stay 5 */
+
+\end{lstlisting}
+\end{frame}
+
+\begin{frame}
+	\frametitle{Pointer arithmetics}
+
+    \begin{table}[h]
+        \centering
+        \begin{tabular}{|p{.2\textwidth}|p{.7\textwidth}|}
+            \hline
+            \textbf{Modifier}   & \textbf{Description}  \\
+            \hline
+            \ascode{\&p}        & Get the memory address of variable \ascode{'p'}. \\
+            \hline
+            \ascode{*p}         & Get the value pointed by \ascode{'p'}. \\
+            \hline
+            \ascode{p++}        & Multiply the value of \ascode{'p'} by the bytesize of its type. \\
+            \hline
+            \ascode{p--}        & Substract the value of \ascode{'p'} by the bytesize of its type. \\
+            \hline
+            \ascode{p + n}      & Multiply the value of \ascode{'p'} by the bytesize of its type times \ascode{n}. \\
+            \hline
+            \ascode{p - n}      & Substract the value of \ascode{'p'} by the bytesize of its type times \ascode{n}. \\
+            \hline
+            \ascode{p[n]}       & The same as \ascode{*(p + n)}. \\
+            \hline
+
+        \end{tabular}
+    \end{table}
+
+\end{frame}
+
+\begin{frame}[fragile]
+    \subsection{Arrays}
+	\frametitle{Arrays}
+
+    In C, arrays are pointers, with a predefined length of memory.
+    They can be declared like the following:
+
+    \begin{lstlisting}[style=CStyle]
+int array[10];
+int array[5] = { 0, 1, 2, 3, 4 };
+int array[] = { 0, 1, 2, 3, 4, 5, 6, 7, 8, 9 };
+
+\end{lstlisting}
+
+    \bigskip
+
+    We can access the element of an array, by its index like:
+
+    \begin{lstlisting}[style=CStyle]
+array[0] = 2;
+array[2] = 4;
+int a = array[3];
+
+\end{lstlisting}
+
+\end{frame}
+
+\begin{frame}[fragile]
+	\frametitle{Arrays}
+
+    We can also user pointers as arrays:
+
+    \begin{lstlisting}[style=CStyle]
+int array[10];
+int* p = array;
+
+\end{lstlisting}
+
+    \bigskip
+
+    An array is just a pointer to an already allocated memory area. Therefore we can also get the n-th value like the following:
+
+    \begin{lstlisting}[style=CStyle]
+int array[] = { 0, 1, 2, 3, 4, 5, 6, 7, 8, 9 };
+int a = *(array + 3);   // a will be 3
+
+\end{lstlisting}
+
+\end{frame}
+
+\begin{frame}[fragile]
+    \subsection{Conditions}
+	\frametitle{Conditions}
+
+    C don't have booleans, therefore a condifion is true if it is not 0, and false if it is.
+
+    \begin{lstlisting}[style=CStyle]
+if (0) {
+    // Will always be false
+}
+if (1) {
+    // Will always be true
+}
+if (-5) {
+    // Will always be true
+}
+
+\end{lstlisting}
+
+\end{frame}
+
+\begin{frame}
+	\frametitle{Conditions}
+
+    We can use the following conditional operators:
+
+    \begin{table}[h]
+        \centering
+        \begin{tabular}{|p{.2\textwidth}|p{.7\textwidth}|}
+            \hline
+            \textbf{Operator}   & \textbf{Description}  \\
+            \hline
+            \ascode{!}          & Not \\
+            \ascode{>}          & Greater than \\
+            \ascode{<}          & Lesser than \\
+            \ascode{==}         & Equals \\
+            \ascode{!=}         & Not equals \\
+            \ascode{\&\&}       & And \\
+            \ascode{||}         & Or \\
+            \hline
+
+        \end{tabular}
+    \end{table}
+
+\end{frame}
+
+\begin{frame}[fragile]
+    \subsection{Loops}
+	\frametitle{Loops}
+
+    We can talk about \ascode{while}, \ascode{do while} and \ascode{for} loops.
+
+    While and do while will run until the provided condition is not 0.
+
+    \bigskip
+
+    \begin{lstlisting}[style=CStyle,caption={While loop}]
+int i = 5;
+
+// Will print the numbers from 5 to 1
+while (i) { // can also be (i > 0)
+    printf("%d\n", i);
+    i--;
+}
+
+// Will print the numbers from 0 to 4
+while (i < 5) {
+    printf("%d\n", i);
+    i++;
+}
+
+\end{lstlisting}
+
+\end{frame}
+
+\begin{frame}[fragile]
+    \frametitle{Loops}
+
+    \begin{lstlisting}[style=CStyle]
+int i = 0;
+
+// Will print the numbers from 0 to 4
+for (i = 0; i < 5; i++) {
+    printf("%d\n", i);
+}
+
+\end{lstlisting}
+
+\end{frame}
+
+\begin{frame}
+    \subsection{Bitwise operations}
+	\frametitle{Bitwise operations}
+
+    Bitwise operations execute the following on eather one or two different variables:
+
+    \begin{table}[h]
+        \centering
+        \begin{tabular}{|p{.2\textwidth}|p{.7\textwidth}|}
+            \hline
+            \textbf{Operator}   & \textbf{Description}  \\
+            \hline
+            \ascode{\&}         & And \\
+            \ascode{|}          & Or \\
+            \ascode{<<}         & Shift Left (x2) \\
+            \ascode{>>}         & Shift Right (/2) \\
+            \ascode{$\sim$}     & Inverse \\
+            \ascode{\textasciicircum} & XOR \\
+            \hline
+
+        \end{tabular}
+    \end{table}
+
+\end{frame}
+
+\begin{frame}[fragile]
+    \subsection{Structs}
+	\frametitle{Structs}
+
+    C structs are complex variables with named fields.
+    The variables will be declared at the same memory location, after each other.
+
+    They are often used in headers, like in TCP.
+
+    \bigskip
+
+    \begin{lstlisting}[style=CStyle]
+struct my_struct {
+    int a;
+    int b
+    float c;
+    bool d;
+}
+
+struct my_struct my_struct_var1 = { 0 };    // fill with 0
+struct my_struct my_struct_var2 = {
+    .a = 5;
+    .c = 0.6f;
+};
+
+my_struct_var1.b = 12;
+
+\end{lstlisting}
+
+\end{frame}
+
+\begin{frame}[fragile]
+    \subsection{Functions}
+	\frametitle{Functions}
+
+    \begin{lstlisting}[style=CStyle]
+/*
+ * <return type> function_name(<void/int a, ...>) {
+ *     // do stuff
+ * }
+ */
+
+int main() {
+    printf("hello world!");
+    return 0;
+}
+
+\end{lstlisting}
+
+\end{frame}
+
+\begin{frame}[fragile]
+    \subsection{Headers}
+	\frametitle{Headers}
+
+    Header files are like interfaces in other programming languages.
+    Depending on the usage they contain defines, types definitions and function definitions.
+
+    We can include them with: \ascode{\#include "header.h"}.
+
+    \bigskip
+
+    \alert{They shouldn't contain function declarations!}
+
+    \bigskip
+
+    You will also see \ascode{\#include <stdio.h>}.
+    The difference between refering to an include with \ascode{""} and \ascode{<>} is that
+    brackets are used for the standard library and system headers,
+    while double quotes refers to user defined "local" headers.
+
+\end{frame}
+
+\begin{frame}[fragile]
+	\frametitle{Headers example}
+
+    \begin{lstlisting}[style=CStyle]
+// my_header.h
+struct my_struct {
+    int a;
+}
+
+int my_func(void);
+
+\end{lstlisting}
+
+    \bigskip
+
+    \begin{lstlisting}[style=CStyle]
+// my_program.c
+struct my_struct struct_var = { 0 };
+
+int my_func() {
+    return 13;
+}
+
+\end{lstlisting}
+
+\end{frame}
+
+\begin{frame}[fragile]
+	\frametitle{Headers example}
+
+    \begin{lstlisting}[style=CStyle]
+// main.c
+#include <stdio.h>
+#include "my_header.h"
+
+int main() {
+    struct_var.a = my_func();
+    printf("My a: %d", struct_var.a);
+    return 0;
+}
+
+\end{lstlisting}
+
+\end{frame}
+
+\begin{frame}[fragile]
+    \subsection{Strings}
+	\frametitle{Strings}
+
+    Strings are an array of characters. They can eather be stored in an "array", or a pointer.
+
+    They are always terminated by a trailing \ascode{0} character, which can be written with \ascode{\0}.
+
+    \bigskip
+
+    \begin{lstlisting}[style=CStyle]
+char* my_string = "Hello World!";
+
+printf("My message: %s\n", my_string);
+
+\end{lstlisting}
+
+\end{frame}
+
+\begin{frame}[fragile]
+    \subsection{Printf}
+	\frametitle{Printf}
+
+    \ascode{printf()} is part of the standard library.
+    It requires a format string, and extra arguments if they are defined in the format string.
+
+    The syntax is:
+
+    \begin{lstlisting}[style=CStyle]
+#include <stdio.h>
+printf("format_string", args...);
+
+\end{lstlisting}
+
+    The format string can contain format specifiers:
+
+    \begin{table}[h]
+        \centering
+        \begin{tabular}{|p{.2\textwidth}|p{.7\textwidth}|}
+            \hline
+            \textbf{Specifier}  & \textbf{Description}  \\
+            \hline
+            \ascode{\%d}        & Signed integer \\
+            \ascode{\%u}        & Unsigned integer \\
+            \ascode{\%c}        & Character \\
+            \ascode{\%f}        & Floating-point number \\
+            \ascode{\%x}        & Hex number format \\
+            \ascode{\%s}        & String closed by a zero character \ascode{\textbackslash 0} \\
+            \ascode{\%\%}       & Print the \% character \\
+            \hline
+
+        \end{tabular}
+    \end{table}
+
+\end{frame}
+
+\begin{frame}[fragile]
+	\frametitle{Printf}
+
+    The format specifier can also be extended for prefilling by writing the charecter and the length of characters printed.
+    For example:
+    \begin{lstlisting}[style=CStyle]
+printf("My Hex: 0x%08x\n", 0xAB13);
+// will print: My Hex: 0x0000ab13
+
+printf("My Hex: 0x%08X\n", 0xAB13);
+// will print: My Hex: 0x0000AB13
+
+\end{lstlisting}
+
+    \bigskip
+
+    The precision of floating-point numbers can also be specified as:
+    \begin{lstlisting}[style=CStyle]
+printf("My float: %.2f\n",     2.3456);
+// will print: My float: 2.34
+printf("My float: %02.1f\n",   2.3456);
+// will print: My float: 02.3
+
+\end{lstlisting}
+
+\end{frame}
+
+%------------------------------------------------
+
+\begin{frame}
+    \section{Compileing}
+	\begin{center}
+		{\Huge Compileing}
+	\end{center}
+\end{frame}
+
+
+\begin{frame}
+    \subsection{GCC}
+	\frametitle{GCC}
+\end{frame}
+
+\begin{frame}
+    \subsection{CMake}
+	\frametitle{CMake}
+\end{frame}
+
+\begin{frame}[fragile]
+    \subsection{Hello World}
+	\frametitle{Hello World}
+
+    Lets write our first application. Create a \ascode{hello_world.c} file, and write the following:
+
+    \begin{lstlisting}[style=CStyle]
+#include <stdio.h>
+
+int main() {
+    printf("Hello World!\n");
+    return 0;
+}
+
+\end{lstlisting}
+
+    \bigskip
+
+    Lets compile our program with:
+    \begin{lstlisting}[style=CStyle]
+gcc hello_world.c -o hello_world
+
+\end{lstlisting}
+
+\end{frame}
+
+
+%------------------------------------------------
+
+\begin{frame}
+    \section{Excercises}
+	\begin{center}
+		{\Huge Excercises}
+	\end{center}
+\end{frame}
+
+%------------------------------------------------
+
+%\subsection{Paragraphs and Lists}
+%
+%\begin{frame}
+%	\frametitle{Paragraphs of Text}
+%
+%	Sed iaculis \alert{dapibus gravida}. Morbi sed tortor erat, nec interdum arcu. Sed id lorem lectus. Quisque viverra augue id sem ornare non aliquam nibh tristique. Aenean in ligula nisl. Nulla sed tellus ipsum. Donec vestibulum ligula non lorem vulputate fermentum accumsan neque mollis.
+%
+%	\bigskip % Vertical whitespace
+%
+%	% Quote example
+%	\begin{quote}
+%		Sed diam enim, sagittis nec condimentum sit amet, ullamcorper sit amet libero. Aliquam vel dui orci, a porta odio.\\
+%		--- Someone, somewhere\ldots
+%	\end{quote}
+%
+%	\bigskip % Vertical whitespace
+%
+%	Nullam id suscipit ipsum. Aenean lobortis commodo sem, ut commodo leo gravida vitae. Pellentesque vehicula ante iaculis arcu pretium rutrum eget sit amet purus. Integer ornare nulla quis neque ultrices lobortis.
+%\end{frame}
+%
+%%------------------------------------------------
+%
+%\begin{frame}
+%	\frametitle{Lists}
+%	\framesubtitle{Bullet Points and Numbered Lists} % Optional subtitle
+%
+%	\begin{itemize}
+%		\item Lorem ipsum dolor sit amet, consectetur adipiscing elit
+%		\item Aliquam blandit faucibus nisi, sit amet dapibus enim tempus
+%		\begin{itemize}
+%			\item Lorem ipsum dolor sit amet, consectetur adipiscing elit
+%			\item Nam cursus est eget velit posuere pellentesque
+%		\end{itemize}
+%		\item Nulla commodo, erat quis gravida posuere, elit lacus lobortis est, quis porttitor odio mauris at libero
+%	\end{itemize}
+%
+%	\bigskip % Vertical whitespace
+%
+%	\begin{enumerate}
+%		\item Nam cursus est eget velit posuere pellentesque
+%		\item Vestibulum faucibus velit a augue condimentum quis convallis nulla gravida
+%	\end{enumerate}
+%\end{frame}
+%
+%%------------------------------------------------
+%
+%\begin{frame}
+%    \subsection{Blocks}
+%	\begin{center}
+%		{\Huge Blocks}
+%	\end{center}
+%\end{frame}
+%
+%\begin{frame}
+%	\frametitle{Blocks of Highlighted Text}
+%
+%	\begin{block}{Block Title}
+%		Lorem ipsum dolor sit amet, consectetur adipiscing elit. Integer lectus nisl, ultricies in feugiat rutrum, porttitor sit amet augue.
+%	\end{block}
+%
+%	\begin{exampleblock}{Example Block Title}
+%		Aliquam ut tortor mauris. Sed volutpat ante purus, quis accumsan.
+%	\end{exampleblock}
+%
+%	\begin{alertblock}{Alert Block Title}
+%		Pellentesque sed tellus purus. Class aptent taciti sociosqu ad litora torquent per conubia nostra, per inceptos himenaeos.
+%	\end{alertblock}
+%
+%	\begin{block}{} % Block without title
+%		Suspendisse tincidunt sagittis gravida. Curabitur condimentum, enim sed venenatis rutrum, ipsum neque consectetur orci.
+%	\end{block}
+%\end{frame}
+%
+%%------------------------------------------------
+%
+%\subsection{Columns}
+%
+%\begin{frame}
+%	\frametitle{Multiple Columns}
+%	\framesubtitle{Subtitle} % Optional subtitle
+%
+%	\begin{columns}[c] % The "c" option specifies centered vertical alignment while the "t" option is used for top vertical alignment
+%		\begin{column}{0.45\textwidth} % Left column width
+%			\textbf{Heading}
+%			\begin{enumerate}
+%				\item Statement
+%				\item Explanation
+%				\item Example
+%			\end{enumerate}
+%		\end{column}
+%		\begin{column}{0.5\textwidth} % Right column width
+%			Lorem ipsum dolor sit amet, consectetur adipiscing elit. Integer lectus nisl, ultricies in feugiat rutrum, porttitor sit amet augue. Aliquam ut tortor mauris. Sed volutpat ante purus, quis accumsan dolor.
+%		\end{column}
+%	\end{columns}
+%\end{frame}
+%
+%%------------------------------------------------
+%
+%\section{Table and Figure Examples}
+%\begin{frame}
+%    \subsection{Blocks}
+%	\begin{center}
+%		{\Huge Blocks}
+%	\end{center}
+%\end{frame}
+%
+%\subsection{Table}
+%
+%\begin{frame}
+%	\frametitle{Table}
+%	\framesubtitle{Subtitle} % Optional subtitle
+%
+%	\begin{table}
+%		\begin{tabular}{l l l}
+%			\toprule
+%			\textbf{Treatments} & \textbf{Response 1} & \textbf{Response 2}\\
+%			\midrule
+%			Treatment 1 & 0.0003262 & 0.562 \\
+%			Treatment 2 & 0.0015681 & 0.910 \\
+%			Treatment 3 & 0.0009271 & 0.296 \\
+%			\bottomrule
+%		\end{tabular}
+%		\caption{Table caption}
+%	\end{table}
+%\end{frame}
+%
+%%------------------------------------------------
+%
+%\subsection{Figure}
+%
+%\begin{frame}
+%	\frametitle{Figure}
+%
+%	\begin{figure}
+%		\includegraphics[width=0.8\linewidth]{creodocs_logo.pdf}
+%		\caption{Creodocs logo.}
+%	\end{figure}
+%\end{frame}
+%
+%%------------------------------------------------
+%
+%\section{Mathematics}
+%
+%\begin{frame}
+%	\frametitle{Definitions \& Examples}
+%
+%	\begin{definition}
+%		A \alert{prime number} is a number that has exactly two divisors.
+%	\end{definition}
+%
+%	\smallskip % Vertical whitespace
+%
+%	\begin{example}
+%		\begin{itemize}
+%			\item 2 is prime (two divisors: 1 and 2).
+%			\item 3 is prime (two divisors: 1 and 3).
+%			\item 4 is not prime (\alert{three} divisors: 1, 2, and 4).
+%		\end{itemize}
+%	\end{example}
+%
+%	\smallskip % Vertical whitespace
+%
+%	You can also use the \texttt{theorem}, \texttt{lemma}, \texttt{proof} and \texttt{corollary} environments.
+%\end{frame}
+%
+%%------------------------------------------------
+%
+%\begin{frame}
+%	\frametitle{Theorem, Corollary \& Proof}
+%
+%	\begin{theorem}[Mass--energy equivalence]
+%		$E = mc^2$
+%	\end{theorem}
+%
+%	\begin{corollary}
+%		$x + y = y + x$
+%	\end{corollary}
+%
+%	\begin{proof}
+%		$\omega + \phi = \epsilon$
+%	\end{proof}
+%\end{frame}
+%
+%%------------------------------------------------
+%
+%\begin{frame}
+%	\frametitle{Equation}
+%
+%	\begin{equation}
+%		\cos^3 \theta =\frac{1}{4}\cos\theta+\frac{3}{4}\cos 3\theta
+%	\end{equation}
+%\end{frame}
+%
+%%------------------------------------------------
+%
+%\begin{frame}[fragile] % Need to use the fragile option when verbatim is used in the slide
+%	\frametitle{Verbatim}
+%
+%	\begin{example}[Theorem Slide Code]
+%		\begin{verbatim}
+%			\begin{frame}
+%				\frametitle{Theorem}
+%				\begin{theorem}[Mass--energy equivalence]
+%					$E = mc^2$
+%				\end{theorem}
+%		\end{frame}\end{verbatim} % Must be on the same line
+%	\end{example}
+%\end{frame}
+%
+%%------------------------------------------------
+%
+%\begin{frame}
+%	Slide without title.
+%\end{frame}
+%
+%%------------------------------------------------
+%
+%\section{Referencing}
+%
+%\begin{frame}
+%	\frametitle{Citing References}
+%
+%	An example of the \texttt{\textbackslash cite} command to cite within the presentation:
+%
+%	\bigskip % Vertical whitespace
+%
+%	This statement requires citation \cite{p1,p2}.
+%\end{frame}
+%
+%%------------------------------------------------
+%
+%\begin{frame} % Use [allowframebreaks] to allow automatic splitting across slides if the content is too long
+%	\frametitle{References}
+%
+%	\begin{thebibliography}{99} % Beamer does not support BibTeX so references must be inserted manually as below, you may need to use multiple columns and/or reduce the font size further if you have many references
+%		\footnotesize % Reduce the font size in the bibliography
+%
+%		\bibitem[Smith, 2022]{p1}
+%			John Smith (2022)
+%			\newblock Publication title
+%			\newblock \emph{Journal Name} 12(3), 45 -- 678.
+%
+%		\bibitem[Kennedy, 2023]{p2}
+%			Annabelle Kennedy (2023)
+%			\newblock Publication title
+%			\newblock \emph{Journal Name} 12(3), 45 -- 678.
+%	\end{thebibliography}
+%\end{frame}
+%
+%%----------------------------------------------------------------------------------------
+%%	ACKNOWLEDGMENTS SLIDE
+%%----------------------------------------------------------------------------------------
+%
+%\begin{frame}
+%	\frametitle{Acknowledgements}
+%
+%	\begin{columns}[t] % The "c" option specifies centered vertical alignment while the "t" option is used for top vertical alignment
+%		\begin{column}{0.45\textwidth} % Left column width
+%			\textbf{Smith Lab}
+%			\begin{itemize}
+%				\item Alice Smith
+%				\item Devon Brown
+%			\end{itemize}
+%			\textbf{Cook Lab}
+%			\begin{itemize}
+%				\item Margaret
+%				\item Jennifer
+%				\item Yuan
+%			\end{itemize}
+%		\end{column}
+%		\begin{column}{0.5\textwidth} % Right column width
+%			\textbf{Funding}
+%			\begin{itemize}
+%				\item British Royal Navy
+%				\item Norwegian Government
+%			\end{itemize}
+%		\end{column}
+%	\end{columns}
+%\end{frame}
+
+%----------------------------------------------------------------------------------------
+%	CLOSING SLIDE
+%----------------------------------------------------------------------------------------
+
+\begin{frame}[plain] % The optional argument 'plain' hides the headline and footline
+	\begin{center}
+		{\Huge The End}
+
+		\bigskip\bigskip % Vertical whitespace
+
+		{\LARGE Questions? Comments?}
+	\end{center}
+\end{frame}
+
+%----------------------------------------------------------------------------------------
+
+\end{document}

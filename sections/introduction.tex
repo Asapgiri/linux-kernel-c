@@ -1,0 +1,43 @@
+\section{Introduction}
+
+This paper is for the introduction of the C programming language, and its usage in the linux kernel.
+Reading this you will also learn how to create linux kernel modules, and communicate between them and user applications.
+
+Please not that, altaugh this is ment to be an introductory paper and course, this paper will assume that you have
+previous programming experience, and know how to naviagate the linux filesystem.
+Therefore it will not contain full explanation for basic linux commands and howtos, only examples.
+
+Basic environment setup will be provided.
+
+
+\subsection{Prerequirerities}
+
+First we will need a linux machine, which can be obtained trough many ways.
+You can eather use a Virtual Box, your own machine, or WSL.
+\textit{It is advised to use a VM leter on the course, as crashing the kernel when programming modules is common.}
+
+Lets see how to enable WSL on Windows: % todo cite..
+
+\begin{lstlisting}[style=CStyle,caption={Installing WSL}]
+PS > wsl --install                      # Enable the windows linux subsystem
+PS > wsl --list --online                # List all available VMs
+PS > wsl --install -d Ubuntu            # Install an Ubuntu virtual machine
+
+\end{lstlisting}
+
+From here on out, the following commands will assume, that you are using Debian/Ubuntu.
+If that is not the case, \textit{I assume you have the proper knowledge of how to use your own system/distribution}.
+
+\vspace{1em}
+\textbf{We will need to following programs trough the course:}
+\begin{itemize}[noitemsep]
+    \item gcc or clang % todo cite..
+    \item make and kernel-make % todo cite..
+    \item cmake % todo cite..
+\end{itemize}
+
+To install them, run:
+\begin{lstlisting}[style=CStyle,caption={Installing WSL}]
+$ sudo apt install gcc clang make cmake build-essential kmod
+
+\end{lstlisting}

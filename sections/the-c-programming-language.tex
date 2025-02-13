@@ -1,0 +1,380 @@
+\section{The C Programming language}
+
+\subsection{History}
+The C programming language is very simple.
+Altaugh using the language can be quite difficult, due to handling memory directly, and the easyness of shooting
+yourself into the foot.
+But at the same time, it also provides the freedom to use the hardver exactly how we \textit{written} it to be used.
+
+\vspace{.5em}
+C is a general-purpose programming language, and was created in the 1970s by \textit{Dennis Ritchie}. % todo cite..
+It is widely used and most of our infrastructure runs on it.
+
+It was mainly developed to replace assembly, and create portable code/programs.
+Altaugh it is somewhat achived, but moving our code from one platform to another is only available with the help of
+general system headers.
+
+Programs written in C will run at the bare metal, and doesn't have any garbage collection like modern high level
+languages.
+
+Some competitors and alternatives are: \ascode{zig}, \ascode{rust} and \ascode{go}.
+They provide memory management, and compile time memory checks, which will be mandatory in the future, defined by the
+US government. % todo cite..
+
+
+\subsection{Types}
+C is a strongly typed programming language.
+To declare a variable you need to write the \ascode{type} before it.
+The size of a variable will depend on the architecture, but lets see the sizes for a 64 bit processor.
+
+\begin{table}[h]
+    \centering
+    \begin{tabular}{|p{.2\textwidth}|p{.2\textwidth}|p{.5\textwidth}|}
+        \hline
+        \textbf{Type}       & \textbf{Size}     & \textbf{Description}  \\
+        \hline
+        \ascode{char}       & \ascode{8  bit}   & Signed Character (treated as int) \\
+        \ascode{short}      & \ascode{16 bit}   & Short Signed integer.             \\
+        \ascode{int}        & \ascode{32 bit}   & Signed integer.                   \\
+        \ascode{long}       & \ascode{64 bit}   & Long Signed integer.              \\
+        \ascode{float}      & \ascode{32 bit}   & Single precision floating point.  \\
+        \ascode{double}     & \ascode{64 bit}   & Double precision floating point.  \\
+        \hline
+
+    \end{tabular}
+    \caption{Basic C Types}\label{fig:basic-c-types}
+\end{table}
+
+You can read out the bytesize of a variable by using \ascode{sizeof()}.
+
+We can use the following modifyers to change the size and signage of a type.
+
+\begin{table}[h]
+    \centering
+    \begin{tabular}{|p{.2\textwidth}|p{.7\textwidth}|}
+        \hline
+        \textbf{Modifier}   & \textbf{Description}  \\
+        \hline
+        \ascode{signed}     & Ensure a variable is signed. \\
+        \ascode{unsigned}   & Ensure a variable is unsigned. \\
+        \ascode{short}      & Shortens the variable size by half. \textit{(if possible)} \\
+        \ascode{long}       & Doubles the variable size. \textit{(if possible)} \\
+        \hline
+
+    \end{tabular}
+    \caption{Type modifiers}\label{fig:basic-c-type-modifiers}
+\end{table}
+
+
+\subsection{Variables}
+Variables are (?)not zeroed out at initialization.
+Therefore when we declare a variable, by default they will have the previous value of the memory they were assigned to.
+
+\begin{lstlisting}[style=CStyle,caption={Creating variables}]
+int a;
+int b = 0;
+
+int c = 2, d = 4;
+
+\end{lstlisting}
+
+We can do math between them, by using the \ascode{+}, \ascode{-}, \ascode{*} and \ascode{/} operators.
+\begin{lstlisting}[style=CStyle,caption={Using basic math}]
+a = d - b;      // a: 4
+int e = a * c   // e: 8
+
+\end{lstlisting}
+
+
+\subsection{Macros}
+
+Macros can be interpreted as compile time variables.
+The can be defined by \ascode{\#define name value}
+
+C doesn't have boolean types, so they can be defined as:
+
+\begin{lstlisting}[style=CStyle,caption={Macro example bools}]
+#define false   0
+#define true    1
+
+\end{lstlisting}
+
+Macros will only be used at preprocessing, and will be inserted into the code as is.
+They can contain function like variables, which will be used at preprocessing.
+Lets se a short example:
+
+\begin{lstlisting}[style=CStyle,caption={Macro examples}]
+#define debug_string    "[debug]: "
+#define mystring        "words in my head"
+#define number1         75434
+#define number2         1234
+#define sum(a, b)       a + b
+#define mul(a, b)       (a * b)
+
+printf(debug_string "\%s - \%d\n", mystring, sum(number1, number2));
+
+// will be compiled as:
+printf("[debug]: " "\%s - \%d\n", "words in my head", 75434 + 1234));
+// will print: [debug]: words in my head - 76668
+
+\end{lstlisting}
+
+In this example we can also see that constant strings will be concatenated if they follow each other.
+So \ascode{"[debug]: "} and \ascode{"\%s - \%d\textbackslash n"} will be treated as one string by the compiler, as:\\
+\ascode{"[debug]: \%s - \%d\textbackslash n"}.
+
+
+\subsection{Printf}
+
+\ascode{printf()} is part of the standard library.
+It requires a format string, and extra arguments if they are defined in the format string.
+
+The syntax is:
+
+\begin{lstlisting}[style=CStyle,caption={printf format string}]
+#include <stdio.h>
+printf("format_string", args...);
+
+\end{lstlisting}
+
+The format string can contain format specifiers:
+
+\begin{table}[h]
+    \centering
+    \begin{tabular}{|p{.2\textwidth}|p{.7\textwidth}|}
+        \hline
+        \textbf{Specifier}  & \textbf{Description}  \\
+        \hline
+        \ascode{\%d}        & Signed integer \\
+        \ascode{\%u}        & Unsigned integer \\
+        \ascode{\%c}        & Character \\
+        \ascode{\%f}        & Floating-point number \\
+        \ascode{\%x}        & Hex number format \\
+        \ascode{\%s}        & String closed by a zero character \ascode{\textbackslash 0} \\
+        \ascode{\%\%}       & Print the \% character \\
+        \hline
+
+    \end{tabular}
+    \caption{printf format specifiers}\label{table:printf-specifiers}
+\end{table}
+
+The format specifier can also be extended for prefilling by writing the charecter and the length of characters printed.
+For example:
+\begin{lstlisting}[style=CStyle,caption={printf examples}]
+printf("My Hex: 0x\%08x\n", 0xAB13);        // will print: My Hex: 0x0000ab13
+printf("My Hex: 0x\%08X\n", 0xAB13);        // will print: My Hex: 0x0000AB13
+
+\end{lstlisting}
+
+The precision of floating-point numbers can also be specified as:
+\begin{lstlisting}[style=CStyle,caption={printf float formatting}]
+printf("My float: \%.2f\n",     2.3456);    // will print: My float: 2.34
+printf("My float: \%02.1f\n",   2.3456);    // will print: My float: 02.3
+
+\end{lstlisting}
+
+
+\subsection{Basic memory and pointers}
+You can look at computer memory as an array of bytes. It can be indexed from 0 to the sky.
+When running your program you will get a slice of memory to use from the kernel.
+This is where your application will be loaded.
+
+When checking the address of a variable inside your program, you will see that, your program isn't running on address 0.
+That address is reserved for the bootloader.
+Furthermore if you check the address of the function \ascode{main}, you will also see, that it is not even near of the address of a
+variable inside the program. We will talk about that further in section \ref{sec:program-memory}.
+
+For now, you can think of the memory as one addressed block of storage.
+
+\subsubsection{Pointers}
+Pointers are also variables, which point to an arbitrary memory location.
+Their value can be read as an integer and also be used to modify a value at a specific location.
+Lets create a variable and a pointer to its address:
+\begin{lstlisting}[style=CStyle,caption={Pointers}]
+int a = 10;
+int* p = &a;    // will set the value of 'p' to the address of 'a'
+*p = 5;         /* will set the value at the address inside 'p' to 5,
+                   therefore 'a' will be 5 */
+p = 10;         /* will set the value of 'p' to 10,
+                   the value of 'a' will stay 5 */
+
+\end{lstlisting}
+
+\subsubsection{Pointer arithmetics}
+\begin{table}[h]
+    \centering
+    \begin{tabular}{|p{.2\textwidth}|p{.7\textwidth}|}
+        \hline
+        \textbf{Modifier}   & \textbf{Description}  \\
+        \hline
+        \ascode{\&p}        & Get the memory address of variable \ascode{'p'}. \\
+        \hline
+        \ascode{*p}         & Get the value pointed by \ascode{'p'}. \\
+        \hline
+        \ascode{p++}        & Multiply the value of \ascode{'p'} by the bytesize of its type. \\
+                            & If \ascode{'p'} is an \ascode{(int*)}, then it will be multiplied by \ascode{(4)}. \\
+                            & If \ascode{'p'} is a \ascode{(char*)}, then it will be multiplied by \ascode{(1)}. \\
+        \hline
+        \ascode{p--}        & Substract the value of \ascode{'p'} by the bytesize of its type. \\
+                            & If \ascode{'p'} is an \ascode{(int*)}, then it will be substracted by \ascode{(4)}. \\
+                            & If \ascode{'p'} is a \ascode{(char*)}, then it will be substracted by \ascode{(1)}. \\
+        \hline
+        \ascode{p + n}      & Multiply the value of \ascode{'p'} by the bytesize of its type times \ascode{n}. \\
+                            & If \ascode{'p'} is an \ascode{(int*)}, then it will be multiplied by \ascode{(4 * n)}. \\
+                            & If \ascode{'p'} is a \ascode{(char*)}, then it will be multiplied by \ascode{(1 * n)}. \\
+        \hline
+        \ascode{p - n}      & Substract the value of \ascode{'p'} by the bytesize of its type times \ascode{n}. \\
+                            & If \ascode{'p'} is an \ascode{(int*)}, then it will be substracted by \ascode{(4 * n)}. \\
+                            & If \ascode{'p'} is a \ascode{(char*)}, then it will be substracted by \ascode{(1 * n)}. \\
+        \hline
+        \ascode{p[n]}       & The same as \ascode{*(p + n)}. \\
+                            & We are multiplying the value of \ascode{'p'} by the bytesize of its type times \ascode{n}, \\
+                            & then getting the value at that address. \\
+                            & Lets continue in section \ref{sec:c-arrays}. \\
+        \hline
+
+    \end{tabular}
+    \caption{Pointer arithmetics}\label{table:pointer-arythmetics}
+\end{table}
+
+
+\newpage
+\subsection{Arrays}\label{sec:c-arrays}
+In C, arrays are pointers, with a predefined length of memory.
+They can be declared like the following:
+
+\begin{lstlisting}[style=CStyle,caption={Array declaration}]
+int array[10];
+int array[5] = { 0, 1, 2, 3, 4 };
+int array[] = { 0, 1, 2, 3, 4, 5, 6, 7, 8, 9 };
+
+\end{lstlisting}
+
+We can access the element of an array, by its index like:
+
+\begin{lstlisting}[style=CStyle,caption={Array use}]
+array[0] = 2;
+array[2] = 4;
+int a = array[3];
+
+\end{lstlisting}
+
+We can also user pointers as arrays:
+
+\begin{lstlisting}[style=CStyle,caption={Pointer of an array}]
+int array[10];
+int* p = array;
+
+\end{lstlisting}
+
+An array is just a pointer to an already allocated memory area. Therefore we can also get the n-th value like the following:
+
+\begin{lstlisting}[style=CStyle,caption={Array with pointer arithmetics}]
+int array[] = { 0, 1, 2, 3, 4, 5, 6, 7, 8, 9 };
+int a = *(array + 3);   // a will be 3
+
+\end{lstlisting}
+
+
+\newpage
+\subsection{Conditions}
+C don't have booleans, therefore a condifion is true if it is not 0, and false if it is.
+
+\begin{lstlisting}[style=CStyle,caption={Conditions}]
+if (0) {
+    // Will always be false
+}
+if (1) {
+    // Will always be true
+}
+if (-5) {
+    // Will always be true
+}
+
+\end{lstlisting}
+
+We can use the following conditional operators:
+
+\begin{table}[h]
+    \centering
+    \begin{tabular}{|p{.2\textwidth}|p{.7\textwidth}|}
+        \hline
+        \textbf{Operator}   & \textbf{Description}  \\
+        \hline
+        \ascode{!}          & Not \\
+        \ascode{>}          & Greater than \\
+        \ascode{<}          & Lesser than \\
+        \ascode{==}         & Equals \\
+        \ascode{!=}         & Not equals \\
+        \ascode{\&\&}       & And \\
+        \ascode{||}         & Or \\
+        \hline
+
+    \end{tabular}
+    \caption{Conditional operators}\label{table:conditional-operators}
+\end{table}
+
+
+\subsection{Strings}
+Strings are an array of characters closed by 0.
+
+\begin{lstlisting}[style=CStyle,caption={Strings}]
+char* str = "Hello strings!";
+
+\end{lstlisting}
+
+
+\newpage
+\subsection{Loops}
+We can talk about \ascode{while}, \ascode{do while} and \ascode{for} loops.
+
+While and do while will run until the provided condition is not 0.
+
+\begin{lstlisting}[style=CStyle,caption={While loop}]
+int i = 5;
+// Will print the numbers from 5 to 1
+while (i) { // can also be (i > 0)
+    printf("\%d\n", i);
+    i--;
+}
+
+// Will print the numbers from 0 to 4
+while (i < 5) {
+    printf("\%d\n", i);
+    i++;
+}
+
+\end{lstlisting}
+
+\begin{lstlisting}[style=CStyle,caption={For loop}]
+int i = 0;
+// Will print the numbers from 0 to 4
+for (i = 0; i < 5; i++) {
+    printf("\%d\n", i);
+}
+
+\end{lstlisting}
+
+
+\subsection{Bitwise operations}
+
+
+\subsection{Functions}
+
+
+\subsection{Struct and Typedef}
+
+
+\subsection{Unions}
+
+
+\subsection{Using headers}
+
+
+\subsection{Static, Const and Extern}
+
+
+\subsection{Program Memory}\label{sec:program-memory}
+
+
+\subsection{Pointers extended}

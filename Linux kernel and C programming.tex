@@ -1,0 +1,73 @@
+\documentclass[12pt,a4paper]{article}
+\usepackage{styles/oeNIKstyle}
+\usepackage{styles/ngk813_style}
+\usepackage{array}
+\usepackage{hyperref}
+
+\usepackage{t1enc}
+\usepackage{url}
+\usepackage{pdfpages}
+
+\setlength{\parindent}{0 mm} % behúzás mértékét állíthatjuk be
+
+% megadandó adatok
+\author{Korcsák Gergely}
+
+% Beállítások
+% első változó: a számozás helye 1 = jobb oldal, 2 = középen
+% második változó: mutassa-e az összes oldalt. 0 = nem, 1 = igen.
+\setPageNumbering{1}{0}
+
+% set the page style
+\makedefaultpagestyle
+
+\begin{document}
+
+    % lstlisting numbering
+    \renewcommand{\thelstlisting}{\arabic{section}.\arabic{lstlisting}}
+    \renewcommand{\lstlistoflistings}{\begingroup
+        \tocfile{Code snippets}{lol}
+    \endgroup}
+
+	\begin{titlepage}
+		\centering % Sets the whole scope to be centering
+		{
+    	    \textsc{\Large \textbf{Óbuda University}\\ \vspace{5px} \textbf{John von Neumann Faculty of Informatics} }\\
+			\vspace{8cm}
+			\resizebox{0.85\linewidth}{!}{\bfseries Linux kernel and C programming}
+
+			\vfill
+		}
+		%Part that contains the details of the actual student
+		\raggedright
+		{
+            \normalsize{Author:} \textbf\itshape{Gergely Korcsák}\unskip\strut\par
+            \normalsize{Date of issue:} \textbf\itshape{\today}\unskip\strut\par
+		}
+
+
+	\end{titlepage}
+
+    \maketoc
+
+    \setcounter{page}{1} % start counting pages from here
+    \setalgorithmcounter % set up algorithm numbering
+
+    % start document here...
+
+    \include{sections/introduction}
+    \include{sections/the-c-programming-language}
+    \include{sections/gcc-and-compileing}
+
+
+
+    % bibliography and other cutiees ...
+
+    %\makebibliography
+    %\makefigures
+    \maketables
+    \lstlistoflistings
+
+    \appendix
+
+\end{document}

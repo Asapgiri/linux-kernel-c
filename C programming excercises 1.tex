@@ -1,0 +1,111 @@
+\documentclass[12pt,a4paper]{article}
+\usepackage{styles/oeNIKstyle}
+\usepackage{styles/ngk813_style}
+\usepackage{array}
+\usepackage{hyperref}
+
+\usepackage{t1enc}
+\usepackage{url}
+\usepackage{pdfpages}
+
+\setlength{\parindent}{0 mm} % behúzás mértékét állíthatjuk be
+
+% megadandó adatok
+\author{Korcsák Gergely}
+
+% Beállítások
+% első változó: a számozás helye 1 = jobb oldal, 2 = középen
+% második változó: mutassa-e az összes oldalt. 0 = nem, 1 = igen.
+\setPageNumbering{1}{0}
+
+% set the page style
+\makedefaultpagestyle
+
+\begin{document}
+    \setcounter{page}{1} % start counting pages from here
+    \setalgorithmcounter % set up algorithm numbering
+
+	{
+        \centering
+        {\Large \textbf{C programming excercices 1} }\\ \vspace{.5em}\hline
+		\vspace{2em}
+	}
+
+
+    \section{Beginner excercises}
+    \begin{enumerate}
+        \item Create a hello world example.
+        \item Create a hello world example with defineing two macros. One beeing \ascode{HELLO}, the other \ascode{WORLD}
+        \item Lest check the default value of a variable. Create a variable and print out its value, without giving it one.
+        \item Print out the address and the value of the previous variable in the following format:
+              \begin{lstlisting}[style=CStyle]
+[address]:    value
+[0xABABABAB]: 00123
+\end{lstlisting}
+        \item Print out the address and the value of a floating-point variable in the following format:
+              \begin{lstlisting}[style=CStyle]
+[0xABABABAB]: 012.345
+\end{lstlisting}
+        \item Create a variable containing the following string: \ascode{"The sky is beautiful!"}. Print it out until
+              the 10th character.
+        \item Replace the \ascode{'e'} characters in the previous string to the \ascode{'X'} character.
+        \item Create a struct with the following parameters \ascode{"int index; int value;"}. Define it as a type.
+              Create an array of the previously defined type with 10 elements, and fill it up with the square of 1 to 10.
+              Print out the values of the array after filling it up.
+        \item Create the function \ascode{void square(int *a)} and square the incoming pointers value.
+              Print out the value of A before and after executing said function.
+        \item Create character array, with 100 elements. Ask the user for a text input, and read it into the created array.
+              Count the characters given by the user and copy the content into a new char "array", which has the exact
+              size of the input text. \textit{Make sure to also free the new array before exiting the program.}
+    \end{enumerate}
+
+    \newpage
+    \section{Harder excercises}
+    \begin{enumerate}
+        \item Create a function \ascode{void replacer(char* str)}, which will write \ascode{"FILTERED"} over the second
+              word of the text. Make sure to don't overflow the original variable. The text can cover multiple words,
+              until the end of the incoming string, but only need to be written once. Print out the incoming string
+              before and after the function execution.
+        \item Iterate trough the following array until we are at the last elemnt, containing a \ascode{NULL (0)} value:
+              \begin{lstlisting}[style=CStyle]
+unsigned int myarray[] = { 1, 2, 3, 4, 5, 11, 22, 33, 44, 55, 0 };
+\end{lstlisting}
+              and print out its values.
+        \item Create a simple Linked List. Complete the following code and test your approach.
+              \begin{lstlisting}[style=CStyle]
+struct list {
+    int item;
+    struct list* next;
+};
+
+struct list* list_create() {
+    /* TODO */
+}
+int list_add(struct list*, int item) {
+    /* TODO */
+}
+int list_remove(struct list*, int index) {
+    /* TODO */
+}
+int list_get(struct list*, int index) {
+    /* TODO */
+}
+struct list* list_get_next(struct list*) {
+    /* TODO */
+}
+
+int main() {
+    struct list* my_list = list_create();
+    /* TODO */
+}
+\end{lstlisting}
+    \end{enumerate}
+
+    %\newpage
+	%{
+    %    \centering
+    %    {\Large \textbf{Solutions 1} }\\ \vspace{.5em}\hline
+	%	\vspace{2em}
+	%}
+
+\end{document}

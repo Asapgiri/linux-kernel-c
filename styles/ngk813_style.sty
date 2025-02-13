@@ -1,0 +1,216 @@
+
+%\usepackage{xcolor}
+\usepackage[dvipsnames]{xcolor}
+\usepackage{float}
+\usepackage{graphicx}
+\usepackage{subfig}
+\usepackage[titletoc]{appendix}
+\usepackage{pdfpages}
+\usepackage{subfig}
+\usepackage{hyperref}
+\usepackage{fontawesome} % egyedi listajelekhez például
+\usepackage[makeroom]{cancel}
+\usepackage{enumitem}
+\usepackage{tikz}
+\usepackage{efbox}
+\usepackage{subfig}
+%\usepackage[T1]{fontenc}
+\usepackage{textcomp}
+\usepackage{listings}
+%\usepackage{fontspec}
+\usepackage{inconsolata}
+\usepackage{tablefootnote}
+
+\newcommand{\tabitem}{~~\llap{\textbullet}~~}
+
+%\newcommand{\enote}[1]{\textit{\color{magenta} (szerk. megj. K.G.: #1)}}
+\newcommand{\enote}[1]{}
+
+\newcommand{\colored}[2]{{\color{#1} #2}}
+
+
+
+\renewcommand*{\lstlistingname}{Code Snippet}
+%\renewcommand*{\lstlistlistingname}{List of Code snippets}
+\renewcommand*{\lstlistlistingname}{Code snippets}
+
+
+\efboxsetup{linecolor=black,linewidth=1pt,margin=0px}
+
+\definecolor{clr-background}{RGB}{255,255,255}
+\definecolor{clr-text}{RGB}{0,0,0}
+\definecolor{clr-string}{RGB}{163,21,21}
+\definecolor{clr-namespace}{RGB}{0,0,0}
+\definecolor{clr-preprocessor}{RGB}{128,128,128}
+\definecolor{clr-keyword}{RGB}{0,0,255}
+\definecolor{clr-type}{RGB}{43,145,175}
+\definecolor{clr-variable}{RGB}{0,0,0}
+\definecolor{clr-constant}{RGB}{111,0,138} % macro color
+\definecolor{clr-comment}{RGB}{0,128,0}
+
+\lstdefinestyle{VS2017}{
+	backgroundcolor=\color{clr-background},
+	basicstyle=\color{clr-text}, % any text
+	stringstyle=\color{clr-string},
+	identifierstyle=\color{clr-variable}, % just about anything that isn't a directive, comment, string or known type
+	commentstyle=\color{clr-comment},
+	directivestyle=\color{clr-preprocessor}, % preprocessor commands
+	% listings doesn't differentiate between types and keywords (e.g. int vs return)
+	% use the user types color
+	keywordstyle=\color{clr-type},
+	keywordstyle={[2]\color{clr-constant}}, % you'll need to define these or use a custom language
+	tabsize=4
+}
+
+\newcommand{\ascode}[1]{{\fontfamily{DejaVu Sans Mono}\ttfamily\selectfont\replunderscores{#1}}}
+\newcommand{\bfcode}[1]{\textbf{\ascode{#1}}}
+\newcommand{\replunderscores}[1]{\expandafter\@repl@underscores#1_\relax}
+\def\@repl@underscores#1_#2\relax{%
+    \ifx \relax #2\relax
+        % #2 is empty => finish
+        #1%
+    \else
+        % #2 is not empty => underscore was contained, needs to be replaced
+        #1%
+        \textunderscore
+        % continue replacing
+        % #2 ends with an extra underscore so I don't need to add another one
+        \@repl@underscores#2\relax
+    \fi
+}
+
+
+\def\lstbasicfont{\fontfamily{DejaVu Sans Mono}\selectfont\footnotesize}
+
+\definecolor{mGreen}{rgb}{0,0.6,0}
+\definecolor{mGray}{rgb}{0.5,0.5,0.5}
+\definecolor{mPurple}{rgb}{0.58,0,0.82}
+\definecolor{backgroundColour}{rgb}{0.98,0.98,0.98}
+
+\lstset{%
+basicstyle=\ttfamily
+}
+\lstdefinestyle{CStyle}{
+    backgroundcolor=\color{backgroundColour},
+    commentstyle=\color{mGreen},
+    keywordstyle=\color{blue},
+    numberstyle=\small\color{mGray},
+    stringstyle=\color{mPurple},
+    basicstyle=\footnotesize\ttfamily,
+    breakatwhitespace=false,
+    breaklines=true,
+    captionpos=b,
+    keepspaces=true,
+    numbers=left,
+    numbersep=5pt,
+    showspaces=false,
+    showstringspaces=false,
+    showtabs=false,
+    tabsize=4,
+    language=C,
+    upquote=true,
+    inputencoding = utf8,  % Input encoding
+    extendedchars = true,  % Extended ASCII
+    literate      =        % Support additional characters
+      {á}{{\'a}}1  {é}{{\'e}}1  {í}{{\'i}}1 {ó}{{\'o}}1  {ú}{{\'u}}1
+      {Á}{{\'A}}1  {É}{{\'E}}1  {Í}{{\'I}}1 {Ó}{{\'O}}1  {Ú}{{\'U}}1
+      {à}{{\`a}}1  {è}{{\`e}}1  {ì}{{\`i}}1 {ò}{{\`o}}1  {ù}{{\`u}}1
+      {À}{{\`A}}1  {È}{{\'E}}1  {Ì}{{\`I}}1 {Ò}{{\`O}}1  {Ù}{{\`U}}1
+      {ä}{{\"a}}1  {ë}{{\"e}}1  {ï}{{\"i}}1 {ö}{{\"o}}1  {ü}{{\"u}}1
+      {ő}{{\~o}}1  {Ő}{{\~O}}1  {ű}{{\~u}}1 {Ű}{{\~U}}1
+      {Ä}{{\"A}}1  {Ë}{{\"E}}1  {Ï}{{\"I}}1 {Ö}{{\"O}}1  {Ü}{{\"U}}1
+      {â}{{\^a}}1  {ê}{{\^e}}1  {î}{{\^i}}1 {ô}{{\^o}}1  {û}{{\^u}}1
+      {Â}{{\^A}}1  {Ê}{{\^E}}1  {Î}{{\^I}}1 {Ô}{{\^O}}1  {Û}{{\^U}}1
+      {œ}{{\oe}}1  {Œ}{{\OE}}1  {æ}{{\ae}}1 {Æ}{{\AE}}1  {ß}{{\ss}}1
+      {ç}{{\c c}}1 {Ç}{{\c C}}1 {ø}{{\o}}1  {Ø}{{\O}}1   {å}{{\r a}}1
+      {Å}{{\r A}}1 {ã}{{\~a}}1  {õ}{{\~o}}1 {Ã}{{\~A}}1  {Õ}{{\~O}}1
+      {ñ}{{\~n}}1  {Ñ}{{\~N}}1  {¿}{{?`}}1  {¡}{{!`}}1
+      {°}{{\textdegree}}1 {º}{{\textordmasculine}}1 {ª}{{\textordfeminine}}1
+      % ¿ and ¡ are not correctly displayed if inconsolata font is used
+      % together with the lstlisting environment. Consider typing code in
+      % external files and using \lstinputlisting to display them instead.
+}
+\lstdefinelanguage{JavaScript}{
+  keywords={typeof, Promise, new, for, let, true, false, catch, function, return, null, catch, switch, var, if, in, while, do, else, case, break, class, export, boolean, throw, implements, import, this},
+  keywordstyle=\color{blue}\bfseries,
+  ndkeywords={number, string, LogData, TripData, ETripData, LocalTripData, any, writeValue, encode, getElementById, ArrayBuffer, DataView, setUint8, setUint16, parseFloat, setFloat32, push, log, sendCommand},
+  ndkeywordstyle=\color{orange}\bfseries,
+  identifierstyle=\color{black},
+  sensitive=false,
+  comment=[l]{//},
+  morecomment=[s]{/*}{*/},
+  commentstyle=\color{mGreen},
+  stringstyle=\color{red}\ttfamily,
+  morestring=[b]',
+  morestring=[b]"
+}
+\lstset{
+   language=JavaScript,
+   backgroundcolor=\color{lightgray},
+   extendedchars=true,
+   basicstyle=\footnotesize\ttfamily,
+   showstringspaces=false,
+   showspaces=false,
+   numbers=left,
+   numbersep=9pt,
+   tabsize=2,
+   breaklines=true,
+   showtabs=false,
+   captionpos=b
+}
+\lstdefinestyle{JavaScript}{
+    backgroundcolor=\color{backgroundColour},
+    commentstyle=\color{mGreen},
+    keywordstyle=\color{blue},
+    numberstyle=\small\color{mGray},
+    stringstyle=\color{mPurple},
+    basicstyle=\footnotesize\ttfamily,
+    breakatwhitespace=false,
+    breaklines=true,
+    captionpos=b,
+    keepspaces=true,
+    numbers=left,
+    numbersep=5pt,
+    showspaces=false,
+    showstringspaces=false,
+    showtabs=false,
+    tabsize=2,
+    language=JavaScript,
+    inputencoding = utf8,  % Input encoding
+    extendedchars = true,  % Extended ASCII
+    literate      =        % Support additional characters
+      {á}{{\'a}}1  {é}{{\'e}}1  {í}{{\'i}}1 {ó}{{\'o}}1  {ú}{{\'u}}1
+      {Á}{{\'A}}1  {É}{{\'E}}1  {Í}{{\'I}}1 {Ó}{{\'O}}1  {Ú}{{\'U}}1
+      {à}{{\`a}}1  {è}{{\`e}}1  {ì}{{\`i}}1 {ò}{{\`o}}1  {ù}{{\`u}}1
+      {À}{{\`A}}1  {È}{{\'E}}1  {Ì}{{\`I}}1 {Ò}{{\`O}}1  {Ù}{{\`U}}1
+      {ä}{{\"a}}1  {ë}{{\"e}}1  {ï}{{\"i}}1 {ö}{{\"o}}1  {ü}{{\"u}}1
+      {ő}{{\~o}}1  {Ő}{{\~O}}1  {ű}{{\~u}}1 {Ű}{{\~U}}1
+      {Ä}{{\"A}}1  {Ë}{{\"E}}1  {Ï}{{\"I}}1 {Ö}{{\"O}}1  {Ü}{{\"U}}1
+      {â}{{\^a}}1  {ê}{{\^e}}1  {î}{{\^i}}1 {ô}{{\^o}}1  {û}{{\^u}}1
+      {Â}{{\^A}}1  {Ê}{{\^E}}1  {Î}{{\^I}}1 {Ô}{{\^O}}1  {Û}{{\^U}}1
+      {œ}{{\oe}}1  {Œ}{{\OE}}1  {æ}{{\ae}}1 {Æ}{{\AE}}1  {ß}{{\ss}}1
+      {ç}{{\c c}}1 {Ç}{{\c C}}1 {ø}{{\o}}1  {Ø}{{\O}}1   {å}{{\r a}}1
+      {Å}{{\r A}}1 {ã}{{\~a}}1  {õ}{{\~o}}1 {Ã}{{\~A}}1  {Õ}{{\~O}}1
+      {ñ}{{\~n}}1  {Ñ}{{\~N}}1  {¿}{{?`}}1  {¡}{{!`}}1
+      {°}{{\textdegree}}1 {º}{{\textordmasculine}}1 {ª}{{\textordfeminine}}1
+      % ¿ and ¡ are not correctly displayed if inconsolata font is used
+      % together with the lstlisting environment. Consider typing code in
+      % external files and using \lstinputlisting to display them instead.
+}
+\lstdefinestyle{customasm}{
+    belowcaptionskip=1\baselineskip,
+    xleftmargin=\parindent,
+    language=[x86masm]Assembler,
+    basicstyle=\footnotesize\ttfamily,
+    commentstyle=\itshape\color{green!60!black},
+    keywordstyle=\color{blue!80!black},
+    identifierstyle=\color{red!80!black},
+    breakatwhitespace=false,
+    keepspaces=true,
+    tabsize=4,
+    numbers=left,
+    numbersep=8pt,
+    stepnumber=1,
+    numberstyle=\tiny\color{gray},
+    columns = fullflexible,
+}
