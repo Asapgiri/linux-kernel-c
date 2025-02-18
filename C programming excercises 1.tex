@@ -27,15 +27,15 @@
 
 	{
         \centering
-        {\Large \textbf{C programming excercices 1} }\\ \vspace{.5em}\hline
+        {\Large \textbf{C programming exercises 1} }\\ \vspace{.5em}\hline
 		\vspace{2em}
 	}
 
 
-    \section{Beginner excercises}
+    \section{Beginner exercises}
     \begin{enumerate}
-        \item Create a hello world example.
-        \item Create a hello world example with defineing two macros. One beeing \ascode{HELLO}, the other \ascode{WORLD}
+        \item Create a hello world example. Then build it with CMake.
+        \item Create a hello world example with defining two macros. One being \ascode{HELLO}, the other \ascode{WORLD}
         \item Lest check the default value of a variable. Create a variable and print out its value, without giving it one.
         \item Print out the address and the value of the previous variable in the following format:
               \begin{lstlisting}[style=CStyle]
@@ -46,27 +46,35 @@
               \begin{lstlisting}[style=CStyle]
 [0xABABABAB]: 012.345
 \end{lstlisting}
+    \end{enumerate}
+
+    \section{Header and source file exercises}
+    Place all of the following exercises in separate sections and functions. With using other source and header file.
+    \textit{The exercises can go into the same source and header files.}
+    \begin{enumerate}
         \item Create a variable containing the following string: \ascode{"The sky is beautiful!"}. Print it out until
-              the 10th character.
-        \item Replace the \ascode{'e'} characters in the previous string to the \ascode{'X'} character.
+              the 10th character with a function.
+        \item Replace the \ascode{'e'} characters in the previous string to the \ascode{'X'} character. Then print it.
         \item Create a struct with the following parameters \ascode{"int index; int value;"}. Define it as a type.
+              (Use \ascode{typedef existing_type new_type;})\\
               Create an array of the previously defined type with 10 elements, and fill it up with the square of 1 to 10.
               Print out the values of the array after filling it up.
         \item Create the function \ascode{void square(int *a)} and square the incoming pointers value.
               Print out the value of A before and after executing said function.
-        \item Create character array, with 100 elements. Ask the user for a text input, and read it into the created array.
-              Count the characters given by the user and copy the content into a new char "array", which has the exact
-              size of the input text. \textit{Make sure to also free the new array before exiting the program.}
     \end{enumerate}
 
     \newpage
-    \section{Harder excercises}
+    \section{Harder exercises}
+    \textit{Put every exercise in their separate .c and .h file. Include the headers from the main program and compile with CMake.}
     \begin{enumerate}
+        \item Create character array, with 100 elements. Ask the user for a text input, and read it into the created array.
+              Count the characters given by the user and copy the content into a new char "array", which has the exact
+              size of the input text. \textit{Make sure to also free the new array before exiting the program.}
         \item Create a function \ascode{void replacer(char* str)}, which will write \ascode{"FILTERED"} over the second
               word of the text. Make sure to don't overflow the original variable. The text can cover multiple words,
               until the end of the incoming string, but only need to be written once. Print out the incoming string
               before and after the function execution.
-        \item Iterate trough the following array until we are at the last elemnt, containing a \ascode{NULL (0)} value:
+        \item Iterate trough the following array with a pointer until we are at the last element, that is containing a \ascode{NULL (0)} value:
               \begin{lstlisting}[style=CStyle]
 unsigned int myarray[] = { 1, 2, 3, 4, 5, 11, 22, 33, 44, 55, 0 };
 \end{lstlisting}
