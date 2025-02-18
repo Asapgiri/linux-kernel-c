@@ -26,7 +26,6 @@
 % ------------------------------------------------------------------------------
 % Listings
 % ------------------------------------------------------------------------------
-\usepackage[dvipsnames]{xcolor}
 \usepackage{textcomp}
 \usepackage{listings}
 \usepackage{inconsolata}
@@ -36,8 +35,14 @@
 \definecolor{mygreen}{HTML}{37980D}
 \definecolor{myblue}{HTML}{0D089F}
 \definecolor{myred}{HTML}{98290D}
+\definecolor{mGreen}{rgb}{0,0.6,0}
+\definecolor{mGray}{rgb}{0.5,0.5,0.5}
+\definecolor{mPurple}{rgb}{0.58,0,0.82}
+\definecolor{backgroundColour}{rgb}{0.98,0.98,0.98}
 
-\newcommand{\ascode}[1]{{\fontfamily{DejaVu Sans Mono}\ttfamily\selectfont\replunderscores{#1}}}
+\newcommand{\quotetext}[1]{\begin{block}\footnotesize\textit{#1}\end{block}}
+
+\newcommand{\ascode}[1]{\textcolor{blue}{\fontfamily{DejaVu Sans Mono}\ttfamily\selectfont\replunderscores{#1}}}
 \newcommand{\bfcode}[1]{\textbf{\ascode{#1}}}
 \newcommand{\replunderscores}[1]{\expandafter\@repl@underscores#1_\relax}
 \def\@repl@underscores#1_#2\relax{%
@@ -56,11 +61,6 @@
 
 \def\lstbasicfont{\fontfamily{DejaVu Sans Mono}\selectfont\footnotesize}
 
-\definecolor{mGreen}{rgb}{0,0.6,0}
-\definecolor{mGray}{rgb}{0.5,0.5,0.5}
-\definecolor{mPurple}{rgb}{0.58,0,0.82}
-\definecolor{backgroundColour}{rgb}{0.98,0.98,0.98}
-
 \lstset{%
 basicstyle=\ttfamily
 }
@@ -68,7 +68,7 @@ basicstyle=\ttfamily
     backgroundcolor=\color{backgroundColour},
     commentstyle=\color{mGreen},
     keywordstyle=\color{blue},
-    numberstyle=\small\color{mGray},
+    numberstyle=\tiny\color{mGray},
     stringstyle=\color{mPurple},
     basicstyle=\footnotesize\ttfamily,
     breakatwhitespace=false,
@@ -82,6 +82,59 @@ basicstyle=\ttfamily
     showtabs=false,
     tabsize=4,
     language=C,
+    xleftmargin=0.5cm,
+    xrightmargin=0.5cm,
+    upquote=true,
+    inputencoding = utf8,  % Input encoding
+    extendedchars = true,  % Extended ASCII
+    literate      =        % Support additional characters
+      {á}{{\'a}}1  {é}{{\'e}}1  {í}{{\'i}}1 {ó}{{\'o}}1  {ú}{{\'u}}1
+      {Á}{{\'A}}1  {É}{{\'E}}1  {Í}{{\'I}}1 {Ó}{{\'O}}1  {Ú}{{\'U}}1
+      {à}{{\`a}}1  {è}{{\`e}}1  {ì}{{\`i}}1 {ò}{{\`o}}1  {ù}{{\`u}}1
+      {À}{{\`A}}1  {È}{{\'E}}1  {Ì}{{\`I}}1 {Ò}{{\`O}}1  {Ù}{{\`U}}1
+      {ä}{{\"a}}1  {ë}{{\"e}}1  {ï}{{\"i}}1 {ö}{{\"o}}1  {ü}{{\"u}}1
+      {ő}{{\~o}}1  {Ő}{{\~O}}1  {ű}{{\~u}}1 {Ű}{{\~U}}1
+      {Ä}{{\"A}}1  {Ë}{{\"E}}1  {Ï}{{\"I}}1 {Ö}{{\"O}}1  {Ü}{{\"U}}1
+      {â}{{\^a}}1  {ê}{{\^e}}1  {î}{{\^i}}1 {ô}{{\^o}}1  {û}{{\^u}}1
+      {Â}{{\^A}}1  {Ê}{{\^E}}1  {Î}{{\^I}}1 {Ô}{{\^O}}1  {Û}{{\^U}}1
+      {œ}{{\oe}}1  {Œ}{{\OE}}1  {æ}{{\ae}}1 {Æ}{{\AE}}1  {ß}{{\ss}}1
+      {ç}{{\c c}}1 {Ç}{{\c C}}1 {ø}{{\o}}1  {Ø}{{\O}}1   {å}{{\r a}}1
+      {Å}{{\r A}}1 {ã}{{\~a}}1  {õ}{{\~o}}1 {Ã}{{\~A}}1  {Õ}{{\~O}}1
+      {ñ}{{\~n}}1  {Ñ}{{\~N}}1  {¿}{{?`}}1  {¡}{{!`}}1
+      {°}{{\textdegree}}1 {º}{{\textordmasculine}}1 {ª}{{\textordfeminine}}1
+      % ¿ and ¡ are not correctly displayed if inconsolata font is used
+      % together with the lstlisting environment. Consider typing code in
+      % external files and using \lstinputlisting to display them instead.
+}
+
+\lstdefinestyle{CMake}{
+    backgroundcolor=\color{backgroundColour},
+    commentstyle=\color{gray},
+    numberstyle=\tiny\color{mGray},
+    stringstyle=\color{mPurple},
+    basicstyle=\footnotesize\ttfamily,
+    breakatwhitespace=false,
+    breaklines=true,
+    captionpos=b,
+    keepspaces=true,
+    numbers=left,
+    numbersep=5pt,
+    showspaces=false,
+    showstringspaces=false,
+    showtabs=false,
+    tabsize=4,
+    language=bash,
+    classoffset=0,
+    morekeywords={cmake_minimum_required,project,include_directories,add_executable,CMAKE_RUNTIME_OUTPUT_DIRECTORY,CMAKE_BINARY_DIR,CMAKE_CURRENT_SOURCE_DIR},
+    keywordstyle=\color{mGreen},
+    classoffset=1,
+    morekeywords={VERSION,},
+    keywordstyle=\color{orange},
+    classoffset=2,
+    morekeywords={\$,\{,\}},
+    keywordstyle=\color{myblue},
+    xleftmargin=0.5cm,
+    xrightmargin=0.5cm,
     upquote=true,
     inputencoding = utf8,  % Input encoding
     extendedchars = true,  % Extended ASCII
@@ -171,7 +224,7 @@ basicstyle=\ttfamily
 	\frametitle{Requirements}
 
     The course will cover basic programming knowledge of the C language,
-    and how to create linux kernel modules and user applications.
+    and how to create Linux kernel modules and user applications.
 
 	\bigskip % Vertical whitespace
 
@@ -179,7 +232,7 @@ basicstyle=\ttfamily
 	\begin{itemize}
 		\item Attendance
 		\item 50p One midterm exam
-		\item 50p One assignmet
+        \item 50p One assignment (choose until 4th class)
 	\end{itemize}
 
 	\bigskip % Vertical whitespace
@@ -194,8 +247,8 @@ basicstyle=\ttfamily
 	\frametitle{Semester}
 
 	\begin{enumerate}
-        \item Introduction to C (hello world, gcc, CMake)
-        \item Memory basics (cache, stack, heap, pahe(s))
+        \item Introduction to C (hello world, GCC, CMake)
+        \item Memory basics (cache, stack, heap, page(s))
         \item CMake (variables, if/else)
         \item Function pointers, unions and argc/args
         \item Typedef, extern, static and compiler optimization
@@ -213,14 +266,14 @@ basicstyle=\ttfamily
 \end{frame}
 
 \begin{frame}
-    \subsection{Purpouse}
-	\frametitle{Purpouse}
+    \subsection{Purpose}
+	\frametitle{Purpose}
 
-    The purpouse of this course it to get the technical knowledge of the C programming language.
+    The purpose of this course it to get the technical knowledge of the C programming language.
 
     \bigskip
 
-    This course is not for beginners, I expect you to have some prior programming experience. (like C#)
+    This course is not for beginners, I expect you to have some prior programming experience. (like C\#)
 
 \end{frame}
 
@@ -239,16 +292,30 @@ basicstyle=\ttfamily
 	\frametitle{History}
 
     The C programming language is very simple.
-    Altaugh using it can be quite difficult, due to memory management and other.
+    Although using it can be quite difficult, due to memory management and other.
     But provides freedom.
 
     \bigskip
 
-    C is a general-purpose programming language, and was created in the 1970s by \textit{Dennis Ritchie}. % todo cite..
+    C is a general-purpose programming language, and was created in the 1970s by \textit{Ken Thompson} and \textit{Dennis Ritchie}. % todo cite..
 
     \bigskip
 
     It was mainly developed to replace assembly, and create portable code/programs.
+
+    \bigskip
+
+    \quotetext{".. for the first two years their main tool was the assembler language. The labor intensity of writing machine code forced them to look for a replacement, which eventually became the C language. With its help, the operating system kernel and most of the utilities were completely rewritten. The C language allowed for the creation of effective low-level programs on the PDP-11, practically without using the assembler language."}
+
+
+\end{frame}
+
+\begin{frame}
+    \subsection{After you programmed enough C}
+	\frametitle{After you programmed enough C}
+
+    \centering
+    \includegraphics[width=.9\textwidth]{images/linux-jehovas.jpg}
 
 \end{frame}
 
@@ -278,6 +345,8 @@ basicstyle=\ttfamily
     \end{table}
 
     You can read out the bytesize of a variable by using \ascode{sizeof()}.
+
+    Use the standard int library \ascode{stdint.h} for types like \ascode{uint8_t}.
 
 \end{frame}
 
@@ -357,7 +426,7 @@ b += a;
 
     Macros will only be used at preprocessing, and will be inserted into the code as is.
     They can contain function like variables, which will be used at preprocessing.
-    Lets se a short example:
+    Lets see a short example:
 
     \bigskip
 
@@ -369,10 +438,12 @@ b += a;
 #define sum(a, b)       a + b
 #define mul(a, b)       (a * b)
 
-printf(debug_string "%s - %d\n", mystring, sum(number1, number2));
+printf(debug_string "%s - %d\n",
+       mystring, sum(number1, number2));
 
 // will be compiled as:
-printf("[debug]: " "%s - %d\n", "words in my head", 75434 + 1234));
+printf("[debug]: " "%s - %d\n",
+       "words in my head", 75434 + 1234));
 // will print: [debug]: words in my head - 76668
 
 \end{lstlisting}
@@ -401,9 +472,11 @@ printf("[debug]: " "%s - %d\n", "words in my head", 75434 + 1234));
 
     \begin{lstlisting}[style=CStyle]
 int a = 10;
-int* p = &a;    // will set the value of 'p' to the address of 'a'
-*p = 5;         /* will set the value at the address inside 'p' to 5,
-                   therefore 'a' will be 5 */
+int* p = &a;    /* will set the value of 'p' to the
+                   address of 'a' */
+*p = 5;         /* will set the value at the address
+                   inside 'p' to 5, therefore 'a'
+                   will be 5 */
 p = 10;         /* will set the value of 'p' to 10,
                    the value of 'a' will stay 5 */
 
@@ -425,11 +498,11 @@ p = 10;         /* will set the value of 'p' to 10,
             \hline
             \ascode{p++}        & Multiply the value of \ascode{'p'} by the bytesize of its type. \\
             \hline
-            \ascode{p--}        & Substract the value of \ascode{'p'} by the bytesize of its type. \\
+            \ascode{p--}        & Subtract the value of \ascode{'p'} by the bytesize of its type. \\
             \hline
             \ascode{p + n}      & Multiply the value of \ascode{'p'} by the bytesize of its type times \ascode{n}. \\
             \hline
-            \ascode{p - n}      & Substract the value of \ascode{'p'} by the bytesize of its type times \ascode{n}. \\
+            \ascode{p - n}      & Subtract the value of \ascode{'p'} by the bytesize of its type times \ascode{n}. \\
             \hline
             \ascode{p[n]}       & The same as \ascode{*(p + n)}. \\
             \hline
@@ -493,7 +566,9 @@ int a = *(array + 3);   // a will be 3
     \subsection{Conditions}
 	\frametitle{Conditions}
 
-    C don't have booleans, therefore a condifion is true if it is not 0, and false if it is.
+    C don't have booleans, therefore a condition is true if it is not 0, and false if it is.
+
+    \bigskip
 
     \begin{lstlisting}[style=CStyle]
 if (0) {
@@ -567,12 +642,26 @@ while (i < 5) {
 \begin{frame}[fragile]
     \frametitle{Loops}
 
+    For loops will run until the condition is 0.
+    They contain an index (see \ascode{'i'}), which is incremented over each cycle.
+
+    The condition can also contain pointers, and in some cases you can see it being used like a foreach.
+
+    \bigskip
+
     \begin{lstlisting}[style=CStyle]
 int i = 0;
 
 // Will print the numbers from 0 to 4
 for (i = 0; i < 5; i++) {
     printf("%d\n", i);
+}
+
+// Will print the numbers from 1 to 5
+int array[] = { 1, 2, 3, 4, 5, 0 /* NULL */};
+int* my_pointer = &array[0]; // an array closed by 0
+for (; NULL != *my_pointer; my_pointer++) {
+    printf("%d\n", *my_pointer);
 }
 
 \end{lstlisting}
@@ -583,7 +672,9 @@ for (i = 0; i < 5; i++) {
     \subsection{Bitwise operations}
 	\frametitle{Bitwise operations}
 
-    Bitwise operations execute the following on eather one or two different variables:
+    Bitwise operations execute the following on ether one or two different variables:
+
+    \bigskip
 
     \begin{table}[h]
         \centering
@@ -639,6 +730,10 @@ my_struct_var1.b = 12;
     \subsection{Functions}
 	\frametitle{Functions}
 
+    Functions start with the return type, followed by the name, and parameters.
+
+    \bigskip
+
     \begin{lstlisting}[style=CStyle]
 /*
  * <return type> function_name(<void/int a, ...>) {
@@ -666,12 +761,14 @@ int main() {
 
     \bigskip
 
-    \alert{They shouldn't contain function declarations!}
+    \begin{alertblock}{Headers}
+        shouldn't contain function declarations!
+    \end{alertblock}
 
     \bigskip
 
     You will also see \ascode{\#include <stdio.h>}.
-    The difference between refering to an include with \ascode{""} and \ascode{<>} is that
+    The difference between referring to an include with \ascode{""} and \ascode{<>} is that
     brackets are used for the standard library and system headers,
     while double quotes refers to user defined "local" headers.
 
@@ -726,9 +823,9 @@ int main() {
     \subsection{Strings}
 	\frametitle{Strings}
 
-    Strings are an array of characters. They can eather be stored in an "array", or a pointer.
+    Strings are an array of characters. They can ether be stored in an "array", or a pointer.
 
-    They are always terminated by a trailing \ascode{0} character, which can be written with \ascode{\0}.
+    They are always terminated by a trailing \ascode{0} character, which can be written with \ascode{\\0}.
 
     \bigskip
 
@@ -781,7 +878,7 @@ printf("format_string", args...);
 \begin{frame}[fragile]
 	\frametitle{Printf}
 
-    The format specifier can also be extended for prefilling by writing the charecter and the length of characters printed.
+    The format specifier can also be extended for prefilling by writing the character and the length of characters printed.
     For example:
     \begin{lstlisting}[style=CStyle]
 printf("My Hex: 0x%08x\n", 0xAB13);
@@ -808,21 +905,145 @@ printf("My float: %02.1f\n",   2.3456);
 %------------------------------------------------
 
 \begin{frame}
-    \section{Compileing}
+    \section{Compiling}
 	\begin{center}
-		{\Huge Compileing}
+		{\Huge Compiling}
 	\end{center}
 \end{frame}
 
 
-\begin{frame}
+\begin{frame}[fragile]
     \subsection{GCC}
 	\frametitle{GCC}
+
+    The GNU Compiler Collection includes front ends for C, C++ and others.
+    It was developed for the GNU operating system, but still widely used
+    and 100\% open source.
+
+    \bigskip
+
+    \begin{example}
+    A simple way to compile our program is to provide our \ascode{.c} files as arguments.
+    \begin{lstlisting}[style=CStyle]
+gcc my_program.c
+
+\end{lstlisting}
+    We can set the name of the output binary with \ascode{-o}
+    \begin{lstlisting}[style=CStyle]
+gcc my_program.c -o my_program
+
+\end{lstlisting}
+    \end{example}
+
+\end{frame}
+
+\begin{frame}[fragile]
+	\frametitle{GCC}
+
+    GCC will look for the includes file in the folder it is being run from.
+    If you wish to provide extra folders for include files, you can use\\
+    the \ascode{-I} flag.
+
+    \begin{example}
+    \begin{lstlisting}[style=CStyle]
+gcc my_program.c -Iinclude-dir
+
+\end{lstlisting}
+    \end{example}
+
+    \bigskip
+
+    You can provide extra defines by usint the \ascode{-D} flag.
+
+    \begin{example}
+    \begin{lstlisting}[style=CStyle]
+gcc my_program.c -Iinclude-dir \
+    -DMYDEFINE1 -DMYDEFINE2=1
+
+\end{lstlisting}
+    \end{example}
+
 \end{frame}
 
 \begin{frame}
     \subsection{CMake}
 	\frametitle{CMake}
+
+    \centering
+    \includegraphics[width=.7\textwidth]{images/cmake-sucks.jpg}
+
+\end{frame}
+
+\begin{frame}
+	\frametitle{CMake}
+
+    CMake is a tool (extending Make) to help building larger projects in C and C++.
+
+    \bigskip
+
+    It uses the \ascode{CMakeLists.txt} files to specify the compile options.
+
+    \begin{block}{Basics}
+        \begin{table}[h]
+            \centering
+            \begin{tabular}{|p{.32\textwidth}|p{.58\textwidth}|}
+                \hline \textbf{Command}                 & \textbf{Description}  \\
+                \hline \ascode{project()}               & Specify the project name, and language \\
+                \hline \ascode{include_directories()}   & Add include directories \\
+                \hline \ascode{add_executable()}        & Add source files \\
+                \hline \ascode{set()}                   & Set CMake variable \\
+                \hline
+
+            \end{tabular}
+        \end{table}
+    \end{block}
+
+\end{frame}
+
+\begin{frame}[fragile]
+    \subsection{CMake Example}
+	\frametitle{CMake Example}
+
+    Example \ascode{CMakeLists.txt} for compileing \ascode{hello_world.c}:
+
+    \bigskip
+
+    \begin{lstlisting}[style=CMake]
+cmake_minimum_required(VERSION 3.22)
+set(CMAKE_C_COMPILER gcc)
+
+project(hello C)
+
+set(CMAKE_RUNTIME_OUTPUT_DIRECTORY
+    ${CMAKE_BINARY_DIR}/bin)
+
+include_directories(${CMAKE_CURRENT_SOURCE_DIR}/include)
+
+add_executable(hello hello_world.c)
+
+\end{lstlisting}
+
+\end{frame}
+
+\begin{frame}[fragile]
+    \subsection{CMake Build}
+	\frametitle{CMake Build}
+
+    You can build a CMake project with:
+
+    \bigskip
+
+    \begin{lstlisting}[style=CMake]
+cmake -S . -B __build
+cmake --build __build
+
+\end{lstlisting}
+
+    \bigskip
+
+    The \ascode{-S} flag specifies the \ascode{source},
+    and the \ascode{-B} flag specifies the \ascode{build} directory.
+
 \end{frame}
 
 \begin{frame}[fragile]
@@ -845,7 +1066,15 @@ int main() {
 
     Lets compile our program with:
     \begin{lstlisting}[style=CStyle]
-gcc hello_world.c -o hello_world
+gcc hello_world.c -o hello
+
+\end{lstlisting}
+
+    \bigskip
+
+    Lets run our program with:
+    \begin{lstlisting}[style=CStyle]
+./hello
 
 \end{lstlisting}
 
@@ -855,9 +1084,9 @@ gcc hello_world.c -o hello_world
 %------------------------------------------------
 
 \begin{frame}
-    \section{Excercises}
+    \section{Exercises}
 	\begin{center}
-		{\Huge Excercises}
+		{\Huge Exercises}
 	\end{center}
 \end{frame}
 

@@ -1,1 +1,11 @@
-out/*
+out/sections/*
+*build*
+out/*.aux
+out/*.log
+out/*.out
+out/*.lol
+out/*.lot
+out/*.toc
+out/*.nav
+out/*.snm
+out/*.vrb
