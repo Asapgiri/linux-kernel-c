@@ -1,6 +1,7 @@
 file='Linux kernel and C programming'
 ex1='C programming excercises 1'
-ppt='Linux kernel and C programming presentation'
+lkacp1='LKACP1_CIntro'
+lkacp2='LKACP2_Memory'
 
 doc:
 	mkdir -p out
@@ -10,10 +11,15 @@ doc:
 	pdflatex -output-directory=out ${file}.tex
 	pdflatex -output-directory=out ${file}.tex
 
-ppt:
+lkacp1:
 	mkdir -p out
-	pdflatex -output-directory=out ${ppt}.tex
-	pdflatex -output-directory=out ${ppt}.tex
+	pdflatex -output-directory=out ${lkacp1}.tex
+	pdflatex -output-directory=out ${lkacp1}.tex
+
+lkacp2:
+	mkdir -p out
+	pdflatex -output-directory=out ${lkacp2}.tex
+	pdflatex -output-directory=out ${lkacp2}.tex
 
 ex1:
 	mkdir -p out
