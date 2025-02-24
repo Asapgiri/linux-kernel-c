@@ -1,0 +1,64 @@
+\documentclass[12pt,a4paper]{article}
+\usepackage{styles/oeNIKstyle}
+\usepackage{styles/ngk813_style}
+\usepackage{array}
+\usepackage{hyperref}
+
+\usepackage{t1enc}
+\usepackage{url}
+\usepackage{pdfpages}
+
+\setlength{\parindent}{0 mm} % behúzás mértékét állíthatjuk be
+
+% megadandó adatok
+\author{Korcsák Gergely}
+
+% Beállítások
+% első változó: a számozás helye 1 = jobb oldal, 2 = középen
+% második változó: mutassa-e az összes oldalt. 0 = nem, 1 = igen.
+\setPageNumbering{1}{0}
+
+\begin{document}
+
+    % lstlisting numbering
+    \renewcommand{\thelstlisting}{\arabic{section}.\arabic{lstlisting}}
+    \renewcommand{\lstlistoflistings}{\begingroup
+        \tocfile{Code snippets}{lol}
+    \endgroup}
+
+    \setcounter{page}{1} % start counting pages from here
+    \setalgorithmcounter % set up algorithm numbering
+
+    % start document here...
+
+    {
+        \centering
+        \Large
+        \textbf{Example assignments}
+        \hline
+        \vspace{1em}
+    }
+
+    \begin{enumerate}
+        \item Create a chat application between 2 separate computers. Communicate trough the internet with using a linux
+            kernel module. The module should act like a server. It can accept messages, and also send them to a specific
+            IP address. (The port can be defined as a constant)
+
+            The user-space application should communicate with the server trough a char device.
+            The user application should show messages in "real time", and also send messages, using the server.
+
+            Implementation can also use the proc functions, for debugging, or other purposes.
+
+        \item Create an application that will driver a robot arm using ROS. The kernel module should send the robot arm
+            to specific locations. And keep it there. (Both simple functins and path calculation are welcome)
+
+            The user-space application should set new coordinates for the robot using char devices.
+            Bonus point, if it can also send trough the rebot in a specific path that is defined by parameters in a file.
+
+            ++Extra point if the application also thinks about the surfaces, that the robot can collide with to prevent
+            the collisions, and also draw or do a niche thing.
+    \end{enumerate}
+
+
+
+\end{document}
