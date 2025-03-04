@@ -167,7 +167,7 @@ basicstyle=\ttfamily
 %----------------------------------------------------------------------------------------
 
 \title[Linux kernel and C programming]{Linux kernel and C programming}
-\subtitle{BLOCK 1: Introduction to Memory}
+\subtitle{BLOCK 2: CMake and Pointers}
 \author[Gergely Korcsák]{Gergely Korcsák}
 \institute[OE NIK]{Óbuda University \\ \smallskip \textit{korcsak.gergely@nik.uni-obuda.hu}}
 \date[\today]{\today}
@@ -200,276 +200,312 @@ basicstyle=\ttfamily
 %----------------------------------------------------------------------------------------
 
 \begin{frame}
-    \sft{Memory}
-\end{frame}
-
-\begin{frame}
-    \ssft{Memory Types}
-
-    \centering
-    \includegraphics[width=.7\linewidth]{images/program_in_memory.png}
-\end{frame}
-
-\begin{frame}
-    \ssft{Program}
-
-    \begin{block}{Program memory}
-        Stores the program (\ascode{text}) data.
-        Which is the executable software.
-    \end{block}
-\end{frame}
-
-\begin{frame}
-    \ssft{Data}
-
-    \begin{exampleblock}{Runtime}
-        The state of a program when it starts executing the main function.
-    \end{exampleblock}
-
-    \bigskip
-    \begin{block}{Data memory}
-        Stores the constant and static variables, that are initialized before runtime.
-        These are usually default configs, and parameters, like memory addresses of components (eg: uart driver address map).
-    \end{block}
-
-    \bigskip
-    \begin{block}{BSS memory}
-        Stores zeroed variables, which have a specific size, and initialized before runtime.
-    \end{block}
-\end{frame}
-
-\begin{frame}
-    \ssft{Heap}
-
-    \begin{block}{Heap}
-        The heap stores every variable which has been allocated during runtime.
-    \end{block}
-
-    \bigskip
-    \begin{alertblock}{Alert}
-        In the user-space every application memory will be freed, after the program execution,
-        but in kernel-space, the memory will only be freed by ether using the \ascode{free} operator or
-        restarting the system.
-    \end{alertblock}
-\end{frame}
-
-\begin{frame}
-    \ssft{Stack}
-
-    \begin{block}{Stack}
-        The stack is a constantly changing memory, where every new function variable will be allocated.
-        The growth direction of the stack is dependent on the system, but usually it grows downwards, by every new function call.
-        If a function is executed, and returned, the stack location is freed.
-    \end{block}
-
-    \bigskip
-    \begin{exampleblock}{Stack overflow?}
-        Stack overflow is when we fill up the stack and start to use memory areas that are not meant to be used as
-        function variable area.
-        Therefore it can cause execution errors.
-
-        Like not returning from a recursive function, before reaching the stack size.
-    \end{exampleblock}
-\end{frame}
-
-\begin{frame}
-    \ssft{Stack protection}
-
-    \begin{alertblock}{Be aware}
-        As the stack is for functions, it also contains the return addresses. To where the current function will return
-        after its execution is finished.
-        If the stack becomes corrupted by some unchecked memory fill. An "attacker" can modify the return address,
-        To point to their own code.
-    \end{alertblock}
-
-    \bigskip
-    \begin{exampleblock}{Stack canary}
-        There are several stack and return protection features in modern hardware and software, but by default it is
-        usually turned off.
-        We can use stack canaries, to add an extra word of memory into the end of a functions allocated stack,
-        so if we overflow it, it will cause an error.
-    \end{exampleblock}
-\end{frame}
-
-\begin{frame}
-    \sft{Memory allocation}
+    \sft{CMake}
 \end{frame}
 
 \begin{frame}[fragile]
-    \ssft{User-space malloc}
+    \ssft{CMake variables}
 
-    In user-space we can allocate memory (\textbf{from the Heap}) by calling the \ascode{malloc()} function.
+    CMake variables also have type and scope. We can define them from the command line, and also in the CMake files.
 
-    It will only need a memory size in bytes, and will return a void pointer, to the newly allocated memory.
-    If it fails, it will return 0.
+    \begin{block}{Command line example}
+        \begin{lstlisting}[style=CStyle]
+$ cmake -S . -B __build \
+    -DMY_STRING:STRING="hello"
+
+\end{lstlisting}
+    \end{block}
+
+    \bigskip
+
+    Or they can be defined in a CMake files.
+
+    \begin{block}{CMakeLists.txt}
+        \begin{lstlisting}[style=CStyle]
+set(<variable> <value>
+    [[CACHE <type> <docstring> [FORCE]] | PARENT_SCOPE])
+
+\end{lstlisting}
+    \end{block}
+
+\end{frame}
+
+\begin{frame}
+    \ssft{CMake variable types and scopes}
+
+    \begin{block}{Types}
+        \begin{table}[h]
+            \centering
+            \begin{tabular}{|p{.32\textwidth}|p{.58\textwidth}|}
+                \hline \textbf{Type}        & \textbf{Description}  \\
+                \hline \ascode{FILEPATH}    & Exact file path \\
+                \hline \ascode{PATH}        & Directory path \\
+                \hline \ascode{STRING}      & Arbitrary string \\
+                \hline \ascode{BOOL}        & Boolean ON/OFF \\
+                \hline \ascode{INTERNAL}    & Persistent \\
+                \hline
+            \end{tabular}
+        \end{table}
+    \end{block}
+\end{frame}
+
+\begin{frame}[fragile]
+    \frametitle{CMake variable types and scopes}
+
+    \begin{block}{Scopes}
+        By default every CMake variable is accessible from their local file, and in every other included file, from the
+        same CMake file. We can chage the scopes by eahter setting it as \ascode{CACHE}-ed, or to \ascode{PARENT_SCOPE}
+
+        \begin{table}[h]
+            \centering
+            \begin{tabular}{|p{.32\textwidth}|p{.58\textwidth}|}
+                \hline \textbf{Scope}           & \textbf{Description}  \\
+                \hline \ascode{CACHE}           & Make the variable accessible globally, after its file was included \\
+                \hline \ascode{PARENT_SCOPE}    & Make the variable accessible to the file, which it is included from \\
+                \hline
+            \end{tabular}
+        \end{table}
+    \end{block}
+        \begin{lstlisting}[style=CStyle]
+#// <variable>  <value>       <type> <description>
+set(MY_STRING   "hello" CACHE STRING "Hello string")
+
+#// <variable>  <value> <scope>
+set(MY_STRING   "hello" PARENT_SCOPE)
+
+\end{lstlisting}
+
+\end{frame}
+
+\begin{frame}[fragile]
+    \ssft{CMake conditionals}
+    \begin{lstlisting}[style=CStyle]
+if(<condition>)
+  <commands>
+elseif(<condition>) # optional block, can be repeated
+  <commands>
+else()              # optional block
+  <commands>
+endif()
+
+\end{lstlisting}
+\end{frame}
+\begin{frame}[fragile]
+    \frametitle{CMake conditionals}
+    \begin{lstlisting}[style=CStyle]
+if(NOT <condition>)
+if(<cond1> AND <cond2>)
+if(<cond1> OR <cond2>)
+
+if((condition) AND (condition OR (condition)))
+
+if(DEFINED <name>|CACHE{<name>}|ENV{<name>})
+if(EXISTS <path-to-file-or-directory>)
+
+if(<variable|string> MATCHES <regex>)
+if(<variable|string> EQUAL <variable|string>)   # double
+if(<variable|string> STREQUAL <variable|string>)
+
+if ("/a//b/c" PATH_EQUAL "/a/b/c")
+
+\end{lstlisting}
+\end{frame}
+
+\begin{frame}[fragile]
+    \ssft{CMake include}
+
+    We can eather add a subdirectory containing a \ascode{CMakeLists.txt} file, or include a .cmake file like the
+    following:
 
     \begin{lstlisting}[style=CStyle]
-// Will allocate 12 bytes of memory
-int* array1 = (int*)malloc(12);
-// Will allocate 4x12 bytes of memory
-int* array2 = (int*)malloc(sizeof(int) * 12);
+.
+|-- CMakeLists.txt <this file>
+|-- my_config.cmake
+`-- terminal
+    |-- terminal.h
+    |-- terminal.c
+    `-- CMakeLists.txt
 
-struct person {
+include(my_config.cmake)
+
+add_subdirectory(terminal)
+
+\end{lstlisting}
+
+
+\end{frame}
+
+%----------------------------------------------------------------------------------------
+
+\begin{frame}
+    \sft{Extendxed C}
+\end{frame}
+
+\begin{frame}[fragile]
+    \ssft{Unions}
+
+    Unions allow to store different data types in the same memory location.
+
+    \begin{lstlisting}[style=CStyle]
+struct http_request {
+    uint32_t version;
+    uint32_t protocol;
+    uint32_t sender;
+    uint32_t randomdata;
+    uint8_t  data[0x1000];
+};
+
+union http {
+    struct http_request header;
+    uint8_t payload[0x2000];
+};
+
+\end{lstlisting}
+
+\end{frame}
+\begin{frame}[fragile]
+    \frametitle{Unions}
+
+    \begin{lstlisting}[style=CStyle]
+int handle_payload(...) {
+    union http req;
+
+    req.header.version    = 1;
+    req.header.protocol   = 0x34;
+    req.header.sender     = IP_TO_INT32(192,168,1,12);
+    req.header.randomdata = random();
+
+    sprintf(req.header.data,
+            "Hello from http payload...!!");
+
+    eht_phy->send(req.payload,
+                  4 * sizeof(uint32_t)
+                  + strlen(req.header.data));
+}
+
+\end{lstlisting}
+
+\end{frame}
+
+\begin{frame}[fragile]
+    \ssft{Function pointers}
+
+    Where the fun begins\ldots
+
+    \bigskip
+
+    \begin{lstlisting}[style=CStyle]
+// <return type> (*<name>)  (args...);
+   int           (*sum)     (int, int);
+
+\end{lstlisting}
+
+\end{frame}
+\begin{frame}[fragile]
+    \frametitle{Function pointers}
+    We can define function pointers as follows:
+    \begin{lstlisting}[style=CStyle]
+// First lets use the function
+int calculate_sum(int a, int b) { return a + b; }
+
+// And create a pointer
+int (*sum)(int a, int b);
+
+// Assigne it
+sum = calculate_sum;
+
+// Call it
+int sum_of_ab = sum(12, 13);
+
+\end{lstlisting}
+
+\end{frame}
+
+\begin{frame}[fragile]
+    \ssft{Function pointers in structs}
+
+    \begin{lstlisting}[style=CStyle]
+struct command {
     char* name;
-    int age;
-};
-// Will allocate 12 bytes of memory
-struct person* myperson =
-    (struct person*)malloc(sizeof(struct person));
-
-\end{lstlisting}
-\end{frame}
-
-\begin{frame}[fragile]
-    \ssft{User-space free}
-
-    After we allocate an area, it will not be reallocated to another variables and programs, until it is freed.
-    We can free up an allocated memory area by calling the \ascode{free()} function.
-
-    \begin{lstlisting}[style=CStyle]
-// Will allocate 40 bytes of memory
-int* array = (int*)malloc(sizeof(int) * 10);
-
-// some array manipulation here..
-
-// Will free up 40 bytes of memory
-free(array);
-
-\end{lstlisting}
-
-    \bigskip
-    \begin{alertblock}{User after free}
-        If we would use the previously allocated then freed variable again, it would be "use after free",
-        which can cause undefined behavior.
-    \end{alertblock}
-\end{frame}
-
-\begin{frame}[fragile]
-    \ssft{Kernel-space}
-
-    We can also allocate and free memory in the kernel when programming modules, but using \ascode{kmalloc} and \ascode{kfree}:
-
-    \begin{lstlisting}[style=CStyle]
-// in linux/slab.h
-void* kmalloc(size_t size, int flags);
-void kfree(void* obj)
-
-\end{lstlisting}
-
-    The \ascode{flags} will be used to decide the type of memory to be allocated.
-
-    \begin{table}[h]
-        \centering
-        \begin{tabular}{|p{.2\textwidth}|p{.5\textwidth}|}
-            \hline
-            \textbf{Flag}       & \textbf{Description}                              \\
-            \hline
-            \ascode{GFP_USER}   & Allocate memory on behalf of user. (may sleep)    \\
-            \ascode{GFP_KERNEL} & Allocate normal kernel memory. (may sleep)        \\
-            \ascode{GFP_ATOMIC} & Allocation will not sleep. (use in interrupts)    \\
-            \ascode{GFP_NOWAIT} & Allocation will not sleep.                        \\
-            ...                 & ...                                               \\
-            \hline
-
-        \end{tabular}
-    \end{table}
-
-\end{frame}
-
-\begin{frame}
-    \sft{Strings}
-\end{frame}
-
-\begin{frame}
-    \ssft{String functions}
-
-    Some string functions are basically \ascode{memcpy()}, but will use the \ascode{'\\0'} character as size.
-
-    \begin{table}[h]
-        \centering
-        \begin{tabular}{|p{.4\textwidth}|p{.5\textwidth}|}
-            \hline
-            \textbf{Function}               & \textbf{Description}                                                  \\
-            \hline \ascode{strlen(str)}            & Will return the string length, excluding the \ascode{'\textbackslash0'} character. \\
-            \hline \ascode{strcpy(dest, src)}      & Will copy \ascode{src} to \ascode{dest}. \\
-            \hline \ascode{strncpy(dest, src, n)}  & Will copy n characters from \ascode{src} to \ascode{dest}. \\
-            \hline \ascode{strcat(dest, src)}      & Concatenate \ascode{src} to the end of \ascode{dest}. \\
-            \hline \ascode{strncat(dest, src, n)}  & Concatenate n characters from \ascode{src} to the end of \ascode{dest}. \\
-            \hline \ascode{strcmp(dest, src)}      & Compares \ascode{src} to \ascode{dest}. \\
-            \hline \ascode{strncmp(dest, src, n)}  & Compares n characters from \ascode{src} to \ascode{dest}. \\
-            \hline
-
-        \end{tabular}
-    \end{table}
-
-\end{frame}
-\begin{frame}[fragile]
-    \frametitle{String functions}
-
-    Some string functions are basically \ascode{memcpy()}, but will use the \ascode{'\\0'} character as size.
-
-    \begin{table}[h]
-        \centering
-        \begin{tabular}{|p{.4\textwidth}|p{.5\textwidth}|}
-            \hline
-            \textbf{Function}               & \textbf{Description}                                                  \\
-            \hline \ascode{strchar(str, c)}        & Find the first occurrence of 'c' or return NULL.  \\
-            \hline \ascode{strrchar(str, c)}       & Find the last occurrence of 'c' or return NULL.  \\
-            \hline \ascode{strstr(str, sub)}       & Find the first occurrence of the sub-string or return NULL.  \\
-            \hline
-
-        \end{tabular}
-    \end{table}
-
-    \bigskip
-    We can also use \ascode{sprintf()} to print into an allocated memory area, instead of the standard output.
-
-    \begin{lstlisting}[style=CStyle]
-char* fname = "Balu";
-char* lname = "Hasu";
-char name[100] = { 0 };
-sprintf(name, "Name is: %s %s", fname, lname);
-printf("name: %s\n", name);
-
-\end{lstlisting}
-
-\end{frame}
-
-\begin{frame}
-    \sft{"Safe" functions}
-\end{frame}
-
-\begin{frame}
-    \sft{Exercises}
-\end{frame}
-
-\begin{frame}[fragile]
-    \frametitle{Exercises}
-
-    Declare the following functions:
-
-    \begin{lstlisting}[style=CStyle]
-#ifndef __MALLOC_H__
-#define __MALLOC_H__
-
-#include <stdint.h>
-
-#define MALLOC_BUF_SIZE 0x1000U
-#define BEEF            0xBEEFBEEF
-#define NULL            0x0U
-
-struct allocator {
-    uint32_t beef;
-    uint32_t size;
+    void (*cmd)(int argc, char** argv);
 };
 
-void*   my_malloc(unsigned long long size);
-int     my_free(void* obj);
+\end{lstlisting}
 
-#endif /* __MALLOC_H__ */
+\end{frame}
+
+\begin{frame}[fragile]
+    \ssft{Argc and argv}
+
+    Command line arguments will follown the program separated by a space character.
+    \begin{lstlisting}[style=CStyle]
+$ terminal help
+
+\end{lstlisting}
+    In this example the terminal is the program, its arguments will be [terminal, help]. The first argument will always
+    be the name of the application called.
+
+    \bigskip
+
+    \begin{lstlisting}[style=CStyle]
+int main(int argc, char** argv) {
+    int i;
+
+    for (i = 0; i < argc; i++) {
+        printf("arg[%i]: %s", i, argv[i]);
+    }
+
+    return 0;
+}
 
 \end{lstlisting}
 
+\end{frame}
+
+%----------------------------------------------------------------------------------------
+
+\begin{frame}
+    \sft{Excercises}
+\end{frame}
+
+\begin{frame}[fragile]
+    \ssft{Read input arguments}
+
+    Lets try out the following:
+
+    \begin{lstlisting}[style=CStyle]
+int main(int argc, char** argv) {
+    int i;
+
+    for (i = 0; i < argc; i++) {
+        printf("arg[%i]: %s", i, argv[i]);
+    }
+
+    return 0;
+}
+
+\end{lstlisting}
+
+\end{frame}
+
+\begin{frame}[fragile]
+    \ssft{Write a simple console application}
+
+    \begin{lstlisting}[style=CStyle]
+.
+|-- CMakeLists.txt
+|-- config.cmake
+`-- userspace
+    |-- functions
+    |   |-- help.h
+    |   |-- help.c
+    |   |-- echo.h
+    |   `-- echo.c
+    |-- terminal.h
+    |-- terminal.c
+    `-- CMakeLists.txt
+
+\end{lstlisting}
 \end{frame}
 
 %----------------------------------------------------------------------------------------

@@ -10,3 +10,4 @@ add_executable(malloc-example.bin
     main.c
     malloc.c)
 
+add_subdirectory(terminal)

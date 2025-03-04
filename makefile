@@ -2,6 +2,7 @@ file='Linux kernel and C programming'
 ex1='C programming excercises 1'
 lkacp1='LKACP1_CIntro'
 lkacp2='LKACP2_Memory'
+lkacp3='LKACP3_CMake'
 ex_ass='Example_Assignment'
 
 doc:
@@ -21,6 +22,11 @@ lkacp2:
 	mkdir -p out
 	pdflatex -output-directory=out ${lkacp2}.tex
 	pdflatex -output-directory=out ${lkacp2}.tex
+
+lkacp3:
+	mkdir -p out
+	pdflatex -output-directory=out ${lkacp3}.tex
+	pdflatex -output-directory=out ${lkacp3}.tex
 
 ex1:
 	mkdir -p out
