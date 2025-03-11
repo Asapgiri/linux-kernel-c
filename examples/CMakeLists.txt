@@ -11,3 +11,4 @@ add_executable(malloc-example.bin
     malloc.c)
 
 add_subdirectory(terminal)
+add_subdirectory(module)

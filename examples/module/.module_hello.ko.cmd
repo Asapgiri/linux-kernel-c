@@ -1,0 +1,1 @@
+cmd_/workdir/module/module_hello.ko := ld -r -m elf_x86_64 -z noexecstack --build-id=sha1  -T scripts/module.lds -o /workdir/module/module_hello.ko /workdir/module/module_hello.o /workdir/module/module_hello.mod.o;  true

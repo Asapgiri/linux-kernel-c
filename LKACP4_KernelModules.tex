@@ -1,0 +1,262 @@
+%----------------------------------------------------------------------------------------
+%	PACKAGES AND OTHER DOCUMENT CONFIGURATIONS
+%----------------------------------------------------------------------------------------
+
+\documentclass[
+	11pt, % Set the default font size, options include: 8pt, 9pt, 10pt, 11pt, 12pt, 14pt, 17pt, 20pt
+	%t, % Uncomment to vertically align all slide content to the top of the slide, rather than the default centered
+	%aspectratio=169, % Uncomment to set the aspect ratio to a 16:9 ratio which matches the aspect ratio of 1080p and 4K screens and projectors
+]{beamer}
+\geometry{mag=2000,truedimen}
+
+\graphicspath{{Images/}{./}}
+
+\usepackage{booktabs}
+
+\usetheme{Madrid}
+\usecolortheme{orchid}
+\usefonttheme{default} % Typeset using the default sans serif font
+
+\usepackage{palatino} % Use the Palatino font for serif text
+\usepackage[default]{opensans} % Use the Open Sans font for sans serif text
+
+\useinnertheme{rectangles}
+
+%\usepackage{styles/ngk813_style}
+
+% ------------------------------------------------------------------------------
+% Listings
+% ------------------------------------------------------------------------------
+\usepackage{textcomp}
+\usepackage{listings}
+\usepackage{inconsolata}
+\usepackage{fontawesome} % egyedi listajelekhez például
+\usepackage{graphicx}
+
+\definecolor{mygreen}{HTML}{37980D}
+\definecolor{myblue}{HTML}{0D089F}
+\definecolor{myred}{HTML}{98290D}
+\definecolor{mGreen}{rgb}{0,0.6,0}
+\definecolor{mGray}{rgb}{0.5,0.5,0.5}
+\definecolor{mPurple}{rgb}{0.58,0,0.82}
+\definecolor{backgroundColour}{rgb}{0.98,0.98,0.98}
+
+\newcommand{\quotetext}[1]{\begin{block}\footnotesize\textit{#1}\end{block}}
+
+\newcommand{\sft}[1]{\section{#1}\frametitle{#1}\centering\LARGE#1}
+\newcommand{\ssft}[1]{\subsection{#1}\frametitle{#1}}
+
+\newcommand{\ascode}[1]{\textcolor{blue}{\fontfamily{DejaVu Sans Mono}\ttfamily\selectfont\replunderscores{#1}}}
+\newcommand{\bfcode}[1]{\textbf{\ascode{#1}}}
+\newcommand{\replunderscores}[1]{\expandafter\@repl@underscores#1_\relax}
+\def\@repl@underscores#1_#2\relax{%
+    \ifx \relax #2\relax
+        % #2 is empty => finish
+        #1%
+    \else
+        % #2 is not empty => underscore was contained, needs to be replaced
+        #1%
+        \textunderscore
+        % continue replacing
+        % #2 ends with an extra underscore so I don't need to add another one
+        \@repl@underscores#2\relax
+    \fi
+}
+
+\def\lstbasicfont{\fontfamily{DejaVu Sans Mono}\selectfont\footnotesize}
+
+\lstset{%
+basicstyle=\ttfamily
+}
+\lstdefinestyle{CStyle}{
+    backgroundcolor=\color{backgroundColour},
+    commentstyle=\color{mGreen},
+    keywordstyle=\color{blue},
+    numberstyle=\tiny\color{mGray},
+    stringstyle=\color{mPurple},
+    basicstyle=\footnotesize\ttfamily,
+    breakatwhitespace=false,
+    breaklines=true,
+    captionpos=b,
+    keepspaces=true,
+    numbers=left,
+    numbersep=5pt,
+    showspaces=false,
+    showstringspaces=false,
+    showtabs=false,
+    tabsize=4,
+    language=C,
+    xleftmargin=0.5cm,
+    xrightmargin=0.5cm,
+    upquote=true,
+    inputencoding = utf8,  % Input encoding
+    extendedchars = true,  % Extended ASCII
+    literate      =        % Support additional characters
+      {á}{{\'a}}1  {é}{{\'e}}1  {í}{{\'i}}1 {ó}{{\'o}}1  {ú}{{\'u}}1
+      {Á}{{\'A}}1  {É}{{\'E}}1  {Í}{{\'I}}1 {Ó}{{\'O}}1  {Ú}{{\'U}}1
+      {à}{{\`a}}1  {è}{{\`e}}1  {ì}{{\`i}}1 {ò}{{\`o}}1  {ù}{{\`u}}1
+      {À}{{\`A}}1  {È}{{\'E}}1  {Ì}{{\`I}}1 {Ò}{{\`O}}1  {Ù}{{\`U}}1
+      {ä}{{\"a}}1  {ë}{{\"e}}1  {ï}{{\"i}}1 {ö}{{\"o}}1  {ü}{{\"u}}1
+      {ő}{{\~o}}1  {Ő}{{\~O}}1  {ű}{{\~u}}1 {Ű}{{\~U}}1
+      {Ä}{{\"A}}1  {Ë}{{\"E}}1  {Ï}{{\"I}}1 {Ö}{{\"O}}1  {Ü}{{\"U}}1
+      {â}{{\^a}}1  {ê}{{\^e}}1  {î}{{\^i}}1 {ô}{{\^o}}1  {û}{{\^u}}1
+      {Â}{{\^A}}1  {Ê}{{\^E}}1  {Î}{{\^I}}1 {Ô}{{\^O}}1  {Û}{{\^U}}1
+      {œ}{{\oe}}1  {Œ}{{\OE}}1  {æ}{{\ae}}1 {Æ}{{\AE}}1  {ß}{{\ss}}1
+      {ç}{{\c c}}1 {Ç}{{\c C}}1 {ø}{{\o}}1  {Ø}{{\O}}1   {å}{{\r a}}1
+      {Å}{{\r A}}1 {ã}{{\~a}}1  {õ}{{\~o}}1 {Ã}{{\~A}}1  {Õ}{{\~O}}1
+      {ñ}{{\~n}}1  {Ñ}{{\~N}}1  {¿}{{?`}}1  {¡}{{!`}}1
+      {°}{{\textdegree}}1 {º}{{\textordmasculine}}1 {ª}{{\textordfeminine}}1
+      % ¿ and ¡ are not correctly displayed if inconsolata font is used
+      % together with the lstlisting environment. Consider typing code in
+      % external files and using \lstinputlisting to display them instead.
+}
+
+\lstdefinestyle{CMake}{
+    backgroundcolor=\color{backgroundColour},
+    commentstyle=\color{gray},
+    numberstyle=\tiny\color{mGray},
+    stringstyle=\color{mPurple},
+    basicstyle=\footnotesize\ttfamily,
+    breakatwhitespace=false,
+    breaklines=true,
+    captionpos=b,
+    keepspaces=true,
+    numbers=left,
+    numbersep=5pt,
+    showspaces=false,
+    showstringspaces=false,
+    showtabs=false,
+    tabsize=4,
+    language=bash,
+    classoffset=0,
+    morekeywords={cmake_minimum_required,project,include_directories,add_executable,CMAKE_RUNTIME_OUTPUT_DIRECTORY,CMAKE_BINARY_DIR,CMAKE_CURRENT_SOURCE_DIR},
+    keywordstyle=\color{mGreen},
+    classoffset=1,
+    morekeywords={VERSION,},
+    keywordstyle=\color{orange},
+    classoffset=2,
+    morekeywords={\$,\{,\}},
+    keywordstyle=\color{myblue},
+    xleftmargin=0.5cm,
+    xrightmargin=0.5cm,
+    upquote=true,
+    inputencoding = utf8,  % Input encoding
+    extendedchars = true,  % Extended ASCII
+    literate      =        % Support additional characters
+      {á}{{\'a}}1  {é}{{\'e}}1  {í}{{\'i}}1 {ó}{{\'o}}1  {ú}{{\'u}}1
+      {Á}{{\'A}}1  {É}{{\'E}}1  {Í}{{\'I}}1 {Ó}{{\'O}}1  {Ú}{{\'U}}1
+      {à}{{\`a}}1  {è}{{\`e}}1  {ì}{{\`i}}1 {ò}{{\`o}}1  {ù}{{\`u}}1
+      {À}{{\`A}}1  {È}{{\'E}}1  {Ì}{{\`I}}1 {Ò}{{\`O}}1  {Ù}{{\`U}}1
+      {ä}{{\"a}}1  {ë}{{\"e}}1  {ï}{{\"i}}1 {ö}{{\"o}}1  {ü}{{\"u}}1
+      {ő}{{\~o}}1  {Ő}{{\~O}}1  {ű}{{\~u}}1 {Ű}{{\~U}}1
+      {Ä}{{\"A}}1  {Ë}{{\"E}}1  {Ï}{{\"I}}1 {Ö}{{\"O}}1  {Ü}{{\"U}}1
+      {â}{{\^a}}1  {ê}{{\^e}}1  {î}{{\^i}}1 {ô}{{\^o}}1  {û}{{\^u}}1
+      {Â}{{\^A}}1  {Ê}{{\^E}}1  {Î}{{\^I}}1 {Ô}{{\^O}}1  {Û}{{\^U}}1
+      {œ}{{\oe}}1  {Œ}{{\OE}}1  {æ}{{\ae}}1 {Æ}{{\AE}}1  {ß}{{\ss}}1
+      {ç}{{\c c}}1 {Ç}{{\c C}}1 {ø}{{\o}}1  {Ø}{{\O}}1   {å}{{\r a}}1
+      {Å}{{\r A}}1 {ã}{{\~a}}1  {õ}{{\~o}}1 {Ã}{{\~A}}1  {Õ}{{\~O}}1
+      {ñ}{{\~n}}1  {Ñ}{{\~N}}1  {¿}{{?`}}1  {¡}{{!`}}1
+      {°}{{\textdegree}}1 {º}{{\textordmasculine}}1 {ª}{{\textordfeminine}}1
+      % ¿ and ¡ are not correctly displayed if inconsolata font is used
+      % together with the lstlisting environment. Consider typing code in
+      % external files and using \lstinputlisting to display them instead.
+}
+
+%----------------------------------------------------------------------------------------
+%	PRESENTATION INFORMATION
+%----------------------------------------------------------------------------------------
+
+\title[Linux kernel and C programming]{Linux kernel and C programming}
+\subtitle{BLOCK 2: Linux kernel modules}
+\author[Gergely Korcsák]{Gergely Korcsák}
+\institute[OE NIK]{Óbuda University \\ \smallskip \textit{korcsak.gergely@nik.uni-obuda.hu}}
+\date[\today]{\today}
+
+%----------------------------------------------------------------------------------------
+
+\begin{document}
+
+%----------------------------------------------------------------------------------------
+%	TITLE SLIDE
+%----------------------------------------------------------------------------------------
+
+\begin{frame}
+	\titlepage
+\end{frame}
+
+%----------------------------------------------------------------------------------------
+%	TABLE OF CONTENTS SLIDE
+%----------------------------------------------------------------------------------------
+
+\begin{frame}
+	\frametitle{Presentation Overview} % Slide title, remove this command for no title
+
+	\tableofcontents % Output the table of contents (all sections on one slide)
+    %\tableofcontents[pausesections,sections={1}] % Output the table of contents (break sections up across separate slides)
+\end{frame}
+
+%----------------------------------------------------------------------------------------
+%	PRESENTATION BODY SLIDES
+%----------------------------------------------------------------------------------------
+
+\begin{frame}
+    \sft{C Leftover short}
+\end{frame}
+
+\begin{frame}[fragile]
+    \ssft{goto}
+\end{frame}
+
+%----------------------------------------------------------------------------------------
+
+\begin{frame}
+    \sft{Linux kernel modules}
+\end{frame}
+
+\begin{frame}
+    \ssft{Introduction}
+\end{frame}
+
+\begin{frame}
+    \ssft{Headers}
+\end{frame}
+
+\begin{frame}
+    \ssft{Hello World}
+\end{frame}
+
+\begin{frame}
+    \ssft{Building}
+\end{frame}
+
+\begin{frame}
+    \ssft{Tooling}
+\end{frame}
+
+\begin{frame}
+    \ssft{Licensing}
+\end{frame}
+
+\begin{frame}
+    \ssft{Proc files}
+\end{frame}
+
+
+
+
+%----------------------------------------------------------------------------------------
+
+\begin{frame}
+    \sft{References:}
+
+    \begin{enumerate}
+        \item https://sysprog21.github.io/lkmpg/
+    \end{enumerate}
+
+\end{frame}
+
+
+
+%----------------------------------------------------------------------------------------
+
+\end{document}
