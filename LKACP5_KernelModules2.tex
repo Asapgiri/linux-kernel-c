@@ -167,7 +167,7 @@ basicstyle=\ttfamily
 %----------------------------------------------------------------------------------------
 
 \title[Linux kernel and C programming]{Linux kernel and C programming}
-\subtitle{BLOCK 2: Linux kernel modules}
+\subtitle{BLOCK 2: Linux kernel modules 2}
 \author[Gergely Korcsák]{Gergely Korcsák}
 \institute[OE NIK]{Óbuda University \\ \smallskip \textit{korcsak.gergely@nik.uni-obuda.hu}}
 \date[\today]{\today}
@@ -200,356 +200,46 @@ basicstyle=\ttfamily
 %----------------------------------------------------------------------------------------
 
 \begin{frame}
-    \sft{C Leftover shorts}
+    \sft{Linux kernel modules 2}
 \end{frame}
-
-\begin{frame}[fragile]
-    \ssft{goto}
-
-    \begin{block}{goto}
-        With the \ascode{goto} keyword, we can jump to a specific line to continue execution from.
-    \end{block}
-
-    \bigskip
-
-        \begin{lstlisting}[style=CStyle]
-int main() {
-    printf("hello 1");
-
-    goto section2;
-
-    printf("hello 2"); // Will not execute
-
-section2:
-    printf("hello 3");
-
-    return 0;
-}
-
-\end{lstlisting}
-
-\end{frame}
-
-%----------------------------------------------------------------------------------------
 
 \begin{frame}
-    \sft{Linux kernel modules}
+    \sft{Char/driver devices}
 \end{frame}
 
 \begin{frame}
     \ssft{Introduction}
-
-    \includegraphics[width=\textwidth]{images/kernel-module.png}
-
-\end{frame}
-
-\begin{frame}[fragile]
-    \ssft{Headers}
-
-    To build modules, first we will need to get the kernel headers.
-    \bigskip
-    \begin{lstlisting}[style=CStyle]
-$ sudo apt install build-esseitials kmod \
-                   linux-headers-$(uname -r)
-
-\end{lstlisting}
-
-    With which we can now access the kernel functions, with dynamic linking.
-
-\end{frame}
-
-\begin{frame}[fragile]
-    \ssft{Hello World}
-
-    We can create our first module:
-
-    \begin{lstlisting}[style=CStyle]
-// hello_module.c
-#include <linux/module.h> /* Needed by all modules */
-#include <linux/printk.h> /* Needed for pr_info() */
-
-int init_module(void)
-{
-    pr_info("Hello world\n");
-
-    return 0;
-}
-
-void cleanup_module(void)
-{
-    pr_info("Goodbye world\n");
-}
-
-MODULE_LICENSE("GPL");
-
-\end{lstlisting}
-
-\end{frame}
-
-\begin{frame}[fragile]
-    \ssft{Building}
-
-    We can build it with the following \ascode{Makefile}
-    \bigskip
-    \begin{lstlisting}[style=CStyle]
-# Makefile
-# We need to add the C files as object files
-obj-m += hello_module.o
-
-BUILDDIR  := $(shell pwd)/build
-SRCDIR    := $(shell pwd)
-KERNELDIR := /lib/modules/$(shell uname -r)/build
-
-all:
-    $(MAKE) -C $(KERNELDIR) M=$(BUILDDIR) src=$(SRCDIR) modules
-
-clean:
-    $(MAKE) -C $(KERNELDIR) M=$(BUILDDIR) src=$(SRCDIR) clean
-
-\end{lstlisting}
-
-    Then build with \ascode{make all}.
-
-\end{frame}
-
-\begin{frame}[fragile]
-    \ssft{Inclusion}
-    \begin{block}{modinfo}
-        We can check the module information:
-    \begin{lstlisting}[style=CStyle]
-$ modinfo build/hello_module.ko
-filename:       /.../build/hello_module.ko
-version:        0.1
-descrtiption:
-author:         Bob
-...
-
-\end{lstlisting}
-    \end{block}
-\end{frame}
-\begin{frame}[fragile]
-    \frametitle{Inclusion}
-    \begin{block}{lsmod}
-        Show the currently running modules
-    \begin{lstlisting}[style=CStyle]
-$ lsmod
-ahci            23756  3
-libahci         65734  1 ahci
-sha1_ssse3      35664  1
-...
-
-\end{lstlisting}
-    \end{block}
-\end{frame}
-\begin{frame}[fragile]
-    \frametitle{Inclusion}
-    \begin{block}{insmod}
-        Include a new module by path
-    \begin{lstlisting}[style=CStyle]
-$ sudo insmod build/hello_module.ko
-
-\end{lstlisting}
-    \end{block}
-    \begin{block}{}
-        Lets check it with lsmod
-    \begin{lstlisting}[style=CStyle]
-$ lsmod | grep hello
-module_hello    12288  0
-
-\end{lstlisting}
-    \end{block}
-    \begin{block}{rmmod}
-        And remove it with
-    \begin{lstlisting}[style=CStyle]
-$ sudo rmmod hello_module
-
-\end{lstlisting}
-    \end{block}
-\end{frame}
-\begin{frame}[fragile]
-    \frametitle{Inclusion}
-    \begin{block}{dmesg}
-        We can check the output of a module in \ascode{dmesg}
-    \begin{lstlisting}[style=CStyle]
-$ dmesg | tail -2
-[ 2645.234345] Hello World!
-[ 2646.234345] Goodbye World!
-
-\end{lstlisting}
-    \end{block}
-\end{frame}
-
-\begin{frame}[fragile]
-   \ssft{Init module with macros}
-
-    We need to modify our code a bit.
-    Lets include the \ascode{init.h} header as well, and specify the init functions by macros:
-    \bigskip
-    \begin{lstlisting}[style=CStyle]
-// ...
-#include <linux/init.h>
-// ...
-
-// Modify init_module(void) to
-static int __inti hello_init(void) {
-    // ...
-
-// And cleanup_module(void) to
-static void __exit hello_exit(void) {
-    // ...
-
-// And add module_init(...) and module_exit(...)
-module_init(hello_init);
-module_exit(hello_exit);
-
-\end{lstlisting}
-
-\end{frame}
-
-\begin{frame}[fragile]
-    \ssft{Further module description}
-
-    To build a module, we must define its license with \ascode{MODULE_LICENSE("GPL");} for example.
-    But we can also specify the author and the description with:
-    \bigskip
-    \begin{lstlisting}[style=CStyle]
-MODULE_LICENSE("GPL");
-MODULE_AUTHOR("LKMPG");
-MODULE_DESCRIPTION("A sample driver");
-
-\end{lstlisting}
-
-    \bigskip
-    Lets add our description, and check it with \ascode{modinfo}.
-
 \end{frame}
 
 \begin{frame}
-    \ssft{Proc files}
-    Proc files were originally created to access information.
-    They are located at the \ascode{/proc} folder.
-    \bigskip
-    These files can be created when loading a module, and its the modules job to remove them afterwards.
-
-    Proc also has some useful systemfiles, like \ascode{meminfo} and \ascode{cpuinfo}.
+    \ssft{Device files}
 \end{frame}
-\begin{frame}[fragile]
-    \frametitle{Proc files}
 
-    To create our own proc file, we need to include:
-    \begin{lstlisting}[style=CStyle]
-#include <linux/proc_fs.h>
-#include <linux/uaccess.h>
-
-\end{lstlisting}
-
-    \bigskip
-    Then fill create our functions for:
-    \begin{lstlisting}[style=CStyle]
-// coming from proc_fs.h
-struct proc_ops {
-    ssize_t	(*proc_read)(struct file *, char __user *,
-                         size_t, loff_t *);
-    ssize_t	(*proc_write)(struct file *,
-                          const char __user *,
-                          size_t, loff_t *);
-    int	(*proc_open)(struct inode *, struct file *);
-    int	(*proc_release)(struct inode *, struct file *);
-    // ...
-};
-
-\end{lstlisting}
+\begin{frame}
+    \ssft{Struct}
 \end{frame}
-\begin{frame}[fragile]
-    \frametitle{Proc files}
 
-    Then crate our own struct
-    \begin{lstlisting}[style=CStyle]
-// create our own struct
-static struct proc_ops my_proc_file {
-    .proc_read = my_proc_read,
-    .proc_write = my_proc_write,
-};
-
-\end{lstlisting}
-
+\begin{frame}
+    \ssft{To crate and to destroy}
 \end{frame}
-\begin{frame}[fragile]
-    \frametitle{Proc files - read}
-    \begin{lstlisting}[style=CStyle]
-static ssize_t my_proc_read(
-            struct file* fp, char __user* buffer,
-            size_t buffer_length, loff_t* offset)
-{
-    char s[] = "Hello World!\n";
-    if (*offset >= sizeof(s) ||
-        copy_to_user(buffer, s, sizeof(s)))
-    {
-        pr_info("copy_to_user failed\n");
-        return 0; // copy failed, written 0 bytes
-    }
-    else
-    {
-        pr_info("procfile read %s\n",
-                fp->f_path.dentry->d_name.name);
-        *offset += sizeof(s);
-        return sizeof(s);
-    }
-}
 
-\end{lstlisting}
-
+\begin{frame}
+    \ssft{Example}
 \end{frame}
-\begin{frame}[fragile]
-    \frametitle{Proc files - write}
-    \begin{lstlisting}[style=CStyle]
-static ssize_t my_proc_write(
-            struct file* fp, char __user* buffer,
-            size_t length, loff_t* offset)
-{
-    char copy_buf[100];
-    size_t cp_size = length;
-    if (sp_size > sizeof(copy_buf))
-        cp_size = sizeof(copy_buf) - 1;
 
-    if (copy_from_user(copy_buf, buffer, cp_size))
-        return -EFAULT;
 
-    copy_buf[cp_size] = '\n';
-    *offset += cp_size;
-    pr_info("procfile write: %s\n", copy_buf);
-
-    return cp_size;
-}
-
-\end{lstlisting}
-
+\begin{frame}
+    \sft{Opening chardev from userspace app}
 \end{frame}
-\begin{frame}[fragile]
-    \frametitle{Proc files}
-    Then we can create the file with
-    \begin{lstlisting}[style=CStyle]
-static struct proc_dir_entry* our_proc_file;
 
-// in init(..)
-our_proc_file = proc_create("hello", 0644, NULL,
-                            &my_proc_file);
-if (NULL == our_proc_file) {
-    pr_alert("Error:Could not initialize /proc/hello\n");
-    return -ENOMEM;
-}
-
-\end{lstlisting}
-
-    \bigskip
-    And remove it with
-    \bigskip
-    \begin{lstlisting}[style=CStyle]
-    // in exit(..)
-    proc_remove(our_proc_file);
-
-\end{lstlisting}
+\begin{frame}
+    \ssft{ioctl}
 \end{frame}
+
+\begin{frame}
+    \ssft{Example}
+\end{frame}
+
 
 
 %----------------------------------------------------------------------------------------
@@ -561,9 +251,10 @@ if (NULL == our_proc_file) {
 
     \bigskip
     \begin{enumerate}
-        \item Lets create our first hello\_module example
-        \item Create a proc file, to which we can write to, and read out its value.
-              If we are out of buffer space, then return an error.
+        \item Create kernel module with a \ascode{chardev} named as \ascode{/dev/termbuffer}.
+        \item Lets make a buffer on the \textit{Heap}, with the bytelength of \ascode{0x1000}.
+              We should be able to write and read from this buffer with the previously created \ascode{/dev/termbuffer}.
+        \item Lets extend our previous terminal application, with writing and reading from \ascode{/dev/termbuffer}.
     \end{enumerate}
 
 \end{frame}
@@ -578,6 +269,7 @@ if (NULL == our_proc_file) {
     \begin{enumerate}
         \item https://sysprog21.github.io/lkmpg/
         \item https://elixir.bootlin.com/linux/v6.13.5/source/include/linux/
+        \item https://linux-kernel-labs.github.io/refs/heads/master/
     \end{enumerate}
 
 \end{frame}

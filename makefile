@@ -4,6 +4,7 @@ lkacp1='LKACP1_CIntro'
 lkacp2='LKACP2_Memory'
 lkacp3='LKACP3_CMake'
 lkacp4='LKACP4_KernelModules'
+lkacp5='LKACP5_KernelModules2'
 ex_ass='Example_Assignment'
 
 doc:
@@ -33,6 +34,11 @@ lkacp4:
 	mkdir -p out
 	pdflatex -output-directory=out ${lkacp4}.tex
 	pdflatex -output-directory=out ${lkacp4}.tex
+
+lkacp5:
+	mkdir -p out
+	pdflatex -output-directory=out ${lkacp5}.tex
+	pdflatex -output-directory=out ${lkacp5}.tex
 
 ex1:
 	mkdir -p out
